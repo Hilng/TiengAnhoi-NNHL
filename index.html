@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ Thống Ôn Luyện Thi Tiếng Anh - NNHL</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              900: '#14532d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.05);
+    }
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.5); border-radius: 4px; }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-50 via-slate-100 to-emerald-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-300">
+
+  <!-- TOP HEADER / NAV -->
+  <header class="no-print sticky top-0 z-40 w-full glass-card border-b border-slate-200/60 dark:border-slate-800/60 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchView('landing')">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition transform">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <h1 class="font-extrabold text-base sm:text-lg leading-none tracking-tight text-slate-900 dark:text-white">TiếngAnhơi<span class="text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold shadow-sm">2026</span></h1>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Nguyễn Ngô Hải Long</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <button id="nav-teacher-btn" onclick="openTeacherAuthModal()" class="px-3.5 py-2 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-emerald-500 hover:text-white text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-user-shield text-emerald-600 dark:text-emerald-400"></i>
+          <span class="hidden sm:inline" id="teacher-btn-text">Giáo viên</span>
+        </button>
+        <button onclick="toggleFullScreen()" class="p-2.5 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition shadow-sm" title="Toàn Màn Hình">
+          <i class="fa-solid fa-expand" id="fs-icon"></i>
+        </button>
+        <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition shadow-sm" title="Sáng / Tối">
+          <i class="fa-solid fa-moon dark:hidden"></i>
+          <i class="fa-solid fa-sun hidden dark:inline text-amber-400"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
+
+    <!-- ==================== VIEW 1: LANDING PAGE ==================== -->
+    <section id="view-landing" class="w-full max-w-2xl mx-auto space-y-6">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden border border-white/50 dark:border-slate-800">
+        <!-- Thông báo trạng thái Phòng Thi -->
+        <div id="room-status-banner" class="mb-5 p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300 flex items-center justify-between shadow-sm">
+          <span id="room-status-text"><i class="fa-solid fa-circle-check text-emerald-500 mr-1.5 text-sm"></i> Phòng thi đang MỞ - Sẵn sàng nhận bài làm</span>
+          <span id="room-status-badge" class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[10px] uppercase tracking-wider font-extrabold shadow-sm">Đang mở</span>
+        </div>
+
+        <div class="text-center space-y-2 mb-6">
+          <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider shadow-sm">Hệ Thống Thi Trực Tuyến</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">CỔNG ÔN LUYỆN VÀ THI ONLINE</h2>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">Trường THCS & THPT Nguyễn Khuyến – Bình Dương</p>
+        </div>
+
+        <form id="student-form" onsubmit="handleStartExam(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1.5">Họ và Tên Học Sinh <span class="text-red-500">*</span></label>
+            <input type="text" id="student-name" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1.5">Lớp Học <span class="text-red-500">*</span></label>
+              <input type="text" id="student-class" required placeholder="Ví dụ: 11E1" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
+            </div>
+
+            <div>
+              <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1.5">Giáo Viên <span class="text-red-500">*</span></label>
+              <select id="student-teacher-select" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1.5">Chọn Đề Thi <span class="text-red-500">*</span></label>
+            <select id="exam-select" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
+            </select>
+          </div>
+
+          <div class="pt-3">
+            <button type="submit" id="btn-start-exam" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 text-white font-extrabold text-base shadow-xl shadow-emerald-500/25 transition transform active:scale-98 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-play"></i> BẮT ĐẦU LÀM BÀI THI
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: EXAM PAGE ==================== -->
+    <section id="view-exam" class="hidden space-y-4">
+      <div class="glass-card rounded-2xl p-4 sm:p-5 shadow-xl sticky top-20 z-30 border border-white/50">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
+          <div>
+            <h3 id="exam-title-display" class="font-black text-base sm:text-lg text-slate-900 dark:text-white">ĐỀ THI TIẾNG ANH</h3>
+            <p id="exam-student-info-display" class="text-xs text-slate-500 font-medium">Học sinh: -- | Lớp: -- | GV: --</p>
+          </div>
+          <div class="flex items-center gap-2 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-300 dark:border-amber-700/50 text-amber-700 dark:text-amber-400 px-4 py-2 rounded-xl font-mono font-black text-base shadow-sm">
+            <i class="fa-solid fa-clock animate-pulse"></i>
+            <span id="timer-display">45:00</span>
+          </div>
+        </div>
+
+        <div class="space-y-1.5 pt-2">
+          <div class="flex justify-between text-xs font-bold">
+            <span class="text-slate-600 dark:text-slate-400">Tiến độ hoàn thành: <span id="answered-count-text" class="text-emerald-600">0</span>/<span id="total-count-text">40</span> câu</span>
+            <span id="progress-percent-text" class="text-emerald-600 font-black">0%</span>
+          </div>
+          <div class="w-full bg-slate-200 dark:bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 shadow-inner">
+            <div id="progress-bar-fill" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-300 w-0 shadow-sm"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="lg:col-span-3 space-y-6" id="questions-container"></div>
+        <div class="lg:col-span-1">
+          <div class="glass-card rounded-2xl p-5 shadow-xl sticky top-48 space-y-4 border border-white/50">
+            <h4 class="font-extrabold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-300">Danh Sách Câu Hỏi</h4>
+            <div id="nav-question-buttons" class="grid grid-cols-5 gap-2 max-h-80 overflow-y-auto custom-scrollbar p-1"></div>
+            <button onclick="confirmSubmitExam()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/20 transition">
+              <i class="fa-solid fa-paper-plane mr-1.5"></i> NỘP BÀI THI
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: RESULT PAGE ==================== -->
+    <section id="view-result" class="hidden space-y-6">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl border-emerald-500/30">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="space-y-2 text-center md:text-left">
+            <span class="px-3.5 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-xs font-extrabold uppercase tracking-wider shadow-sm">Kết Quả Đã Hoàn Thành</span>
+            <h2 id="result-student-name" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Họ Tên Học Sinh</h2>
+            <p id="result-student-meta" class="text-sm text-slate-500 font-medium">Lớp: -- | GV: -- | Đề: FC6</p>
+          </div>
+          
+          <div id="score-box-wrapper" class="flex items-center gap-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-200 dark:border-emerald-800/60 p-6 rounded-3xl shadow-lg">
+            <div class="text-center" id="score-visible-content">
+              <span class="block text-xs font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Điểm Số Của Bạn</span>
+              <span id="score-display-big" class="text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight">0.0</span>
+              <span class="text-xs font-bold text-slate-500">/ 10.0</span>
+            </div>
+            <div class="text-center hidden p-2" id="score-locked-content">
+              <i class="fa-solid fa-lock text-3xl text-amber-500 mb-1"></i>
+              <p class="text-xs font-bold text-amber-600">Điểm số đang bị khóa bởi Giáo viên</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 border-t border-slate-200 dark:border-slate-800 pt-5 flex flex-wrap items-center justify-between gap-4">
+          <button onclick="switchView('landing')" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-xs sm:text-sm transition">Trang Chủ</button>
+          
+          <button onclick="toggleExplanations()" id="btn-toggle-explain" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-bold text-xs sm:text-sm shadow-md transition">
+            <i class="fa-solid fa-key mr-1.5"></i> Xem Đáp Án & Lời Giải Chi Tiết
+          </button>
+        </div>
+      </div>
+
+      <div id="result-details-container" class="space-y-4"></div>
+    </section>
+
+    <!-- ==================== VIEW 4: TEACHER DASHBOARD ==================== -->
+    <section id="view-teacher" class="hidden space-y-6">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black flex items-center gap-3 tracking-tight">
+            <i class="fa-solid fa-chart-line text-emerald-500 bg-emerald-100 dark:bg-emerald-950/60 p-2.5 rounded-2xl shadow-sm"></i> DASHBOARD QUẢN LÝ
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 font-medium mt-1">Kiểm soát phòng thi, tạo đề, thống kê & mở khóa</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- NÚT TẠO ĐỀ TÙY CHỈNH CHÈN BÀI ĐỌC -->
+          <button onclick="openCreateCustomExamModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition">
+            <i class="fa-solid fa-circle-plus mr-1"></i> Tạo Đề Thi Mới
+          </button>
+          <button onclick="openStatsModal()" class="px-3.5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs sm:text-sm shadow-md transition">
+            <i class="fa-solid fa-chart-pie mr-1"></i> Thống Kê
+          </button>
+          <button onclick="openAnswerKeyEditorModal()" class="px-3.5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm shadow-md transition">
+            <i class="fa-solid fa-pen-to-square mr-1"></i> Sửa Đáp Án
+          </button>
+          <button onclick="logoutTeacher()" class="px-3.5 py-2.5 rounded-xl bg-red-600/10 hover:bg-red-600 hover:text-white text-red-600 font-bold text-xs sm:text-sm transition">Đăng xuất</button>
+        </div>
+      </div>
+
+      <!-- BẢNG ĐIỀU KHIỂN MỞ KHÓA -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
+          <div>
+            <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Trạng Thái Phòng Thi</span>
+            <p id="ctrl-room-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở</p>
+          </div>
+          <button id="btn-toggle-room" onclick="toggleExamRoom()" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold shadow-md transition">
+            Khóa Phòng Thi
+          </button>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
+          <div>
+            <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Hiển Thị Điểm Số</span>
+            <p id="ctrl-score-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở</p>
+          </div>
+          <button id="btn-toggle-score-lock" onclick="toggleScoreLock()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold shadow-md transition">
+            Đang Khóa
+          </button>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
+          <div>
+            <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Đáp Án & Lời Giải</span>
+            <p id="ctrl-answer-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở</p>
+          </div>
+          <button id="btn-toggle-answer-lock" onclick="toggleAnswerLock()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-md transition">
+            Đang Khóa
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-card p-5 rounded-2xl shadow-md">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tổng số bài nộp</span>
+          <p id="stat-total-submissions" class="text-3xl font-black text-slate-900 dark:text-white mt-1">0</p>
+        </div>
+        <div class="glass-card p-5 rounded-2xl shadow-md">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Điểm trung bình</span>
+          <p id="stat-avg-score" class="text-3xl font-black text-emerald-600 mt-1">0.0</p>
+        </div>
+        <div class="glass-card p-5 rounded-2xl shadow-md">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Điểm Cao Nhất</span>
+          <p id="stat-max-score" class="text-3xl font-black text-teal-600 mt-1">0.0</p>
+        </div>
+        <div class="glass-card p-5 rounded-2xl shadow-md">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tỉ lệ Đạt (>=5.0)</span>
+          <p id="stat-pass-rate" class="text-3xl font-black text-blue-600 mt-1">0%</p>
+        </div>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="flex-grow">
+            <input type="text" id="teacher-search-input" oninput="renderTeacherTable()" placeholder="🔍 Tìm kiếm theo Tên học sinh hoặc GV..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-xs sm:text-sm outline-none font-semibold focus:border-emerald-500 transition">
+          </div>
+          <div class="w-full sm:w-64">
+            <select id="teacher-class-filter" onchange="renderTeacherTable()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-xs sm:text-sm outline-none font-extrabold focus:border-emerald-500 transition">
+              <option value="">-- Lọc tất cả các lớp --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-200/70 dark:bg-slate-800/70 font-extrabold uppercase tracking-wider text-[11px]">
+                <th class="p-3.5">Thời gian</th>
+                <th class="p-3.5">Họ và Tên</th>
+                <th class="p-3.5">Lớp</th>
+                <th class="p-3.5">Giáo Viên</th>
+                <th class="p-3.5">Mã Đề</th>
+                <th class="p-3.5 text-center">Điểm Số</th>
+                <th class="p-3.5 text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="teacher-records-tbody" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="no-print w-full glass-card border-t border-slate-200/60 dark:border-slate-800/60 mt-12 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500 dark:text-slate-400 text-center md:text-left">
+      <div>
+        <p class="font-bold text-slate-700 dark:text-slate-200">Hệ Thống Ôn Luyện Thi Trực Tuyến <span class="font-bold text-emerald-600 dark:text-emerald-400">TiếngAnhơi</p>
+        <p>Trường THCS & THPT Nguyễn Khuyến – Bình Dương</p>
+      </div>
+      <div>
+        <p>Phát triển bởi <span class="font-bold text-emerald-600 dark:text-emerald-400">Nguyễn Ngô Hải Long</span></p>
+        <p>© 2026 Bản quyền thuộc về tác giả. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL: TEACHER AUTH ==================== -->
+  <div id="modal-teacher-auth" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative border border-white/50">
+      <button onclick="closeModal('modal-teacher-auth')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+      <div class="flex border-b border-slate-200 dark:border-slate-800 mb-6">
+        <button id="tab-auth-login" onclick="switchAuthTab('login')" class="flex-1 pb-3 font-extrabold text-sm text-emerald-600 border-b-2 border-emerald-600">Đăng Nhập GV</button>
+        <button id="tab-auth-register" onclick="switchAuthTab('register')" class="flex-1 pb-3 font-extrabold text-sm text-slate-400 border-b-2 border-transparent">Đăng Ký Tài Khoản</button>
+      </div>
+
+      <form id="form-auth-login" onsubmit="handleTeacherLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Tên Đăng Nhập</label>
+          <input type="text" id="login-username" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Mật Khẩu</label>
+          <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+        </div>
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/25 transition">Đăng Nhập Dashboard</button>
+      </form>
+
+      <form id="form-auth-register" onsubmit="handleTeacherRegister(event)" class="space-y-4 hidden">
+        <div>
+          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Tên Giáo Viên Mới</label>
+          <input type="text" id="reg-username" required placeholder="Ví dụ: Nguyễn Văn X" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Mật Khẩu</label>
+          <input type="password" id="reg-password" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+        </div>
+        <div>
+          <label class="block text-xs font-black uppercase text-emerald-600 mb-1.5">Mã Xác Thực (Nội bộ)</label>
+          <input type="password" id="reg-auth-code" placeholder="Nhập Mã Xác Thực" required class="w-full px-4 py-3 rounded-2xl border border-emerald-400 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+        </div>
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/25 transition">Đăng Ký & Đồng Bộ Web</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: TẠO ĐỀ MỚI (CHÈN BÀI ĐỌC TỰ DO) ==================== -->
+  <div id="modal-create-exam" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-4xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative space-y-5 max-h-[95vh] flex flex-col border border-white/50">
+      <button onclick="closeModal('modal-create-exam')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div>
+        <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-circle-plus text-emerald-500"></i> Tạo Đề Thi Mới
+        </h3>
+        <p class="text-xs text-slate-500 font-medium">Thầy/Cô có thể thêm các đoạn văn bản đọc hiểu (Reading Passage) và chọn vị trí câu số mấy sẽ hiển thị đoạn văn đó.</p>
+      </div>
+
+      <div class="space-y-4 flex-grow overflow-y-auto custom-scrollbar p-1">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1">Mã Đề Thi <span class="text-red-500">*</span></label>
+            <input type="text" id="custom-exam-code" placeholder="Ví dụ: FC0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1">Tiêu Đề Đề Thi <span class="text-red-500">*</span></label>
+            <input type="text" id="custom-exam-title" placeholder="KIỂM TRA ĐÁNH GIÁ HKI - FC0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1">Thời Gian (Phút) <span class="text-red-500">*</span></label>
+            <input type="number" id="custom-exam-time" value="45" min="10" max="180" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1">Số Lượng Câu Hỏi (40 hoặc 50) <span class="text-red-500">*</span></label>
+            <select id="custom-exam-count" onchange="buildCustomExamFormFields()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
+              <option value="40">40 Câu hỏi</option>
+              <option value="50">50 Câu hỏi</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- QUẢN LÝ CÁC ĐOẠN VĂN BẢN ĐỌC HIỂU TÙY CHỈNH -->
+        <div class="space-y-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <div class="flex items-center justify-between">
+            <h4 class="font-black text-sm text-emerald-600"><i class="fa-solid fa-book-open mr-1"></i> Quản Lý Các Đoạn Văn Đọc Hiểu (Reading Passages):</h4>
+            <button type="button" onclick="addPassageInputBox()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow">
+              <i class="fa-solid fa-plus mr-1"></i> Thêm Đoạn Văn Đọc
+            </button>
+          </div>
+          <div id="custom-passages-container" class="space-y-3"></div>
+        </div>
+
+        <!-- CẤU HÌNH TỪNG CÂU HỎI -->
+        <div class="space-y-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <h4 class="font-black text-sm text-emerald-600">📝 Cấu Hình Đề Chi Tiết:</h4>
+          <div id="custom-questions-inputs-container" class="space-y-4"></div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="closeModal('modal-create-exam')" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-xs">Hủy</button>
+        <button onclick="saveCustomExamData()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/20">Lưu Đề Thi Mới</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ANSWER KEY EDITOR ==================== -->
+  <div id="modal-answer-editor" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-4xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative space-y-4 max-h-[90vh] flex flex-col border border-white/50">
+      <button onclick="closeModal('modal-answer-editor')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div>
+          <h3 class="text-lg font-black text-slate-900 dark:text-white">Chỉnh Sửa Đáp Án & Lời Giải Chi Tiết</h3>
+          <p class="text-xs text-emerald-600 dark:text-emerald-400 font-bold">💡 Phân tách các đáp án đúng bằng ký tự <code class="bg-emerald-100 dark:bg-emerald-950 px-1 rounded text-emerald-700 font-extrabold">|</code> (Ví dụ: A|B)</p>
+        </div>
+        <div>
+          <select id="edit-exam-code-select" onchange="populateAnswerEditorForm()" class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold outline-none">
+          </select>
+        </div>
+      </div>
+
+      <div id="edit-questions-list-container" class="space-y-4 flex-grow overflow-y-auto custom-scrollbar p-1"></div>
+
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+        <button onclick="closeModal('modal-answer-editor')" class="px-5 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 font-bold text-xs">Hủy</button>
+        <button onclick="saveModifiedAnswers()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/20">Lưu Thay Đổi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: STUDENT SUBMISSION DETAIL ==================== -->
+  <div id="modal-student-detail" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-3xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative space-y-4 max-h-[90vh] flex flex-col border border-white/50">
+      <button onclick="closeModal('modal-student-detail')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+      <h3 id="student-detail-title" class="text-lg font-black">Chi Tiết Bài Làm Học Sinh</h3>
+      <div id="student-detail-content" class="space-y-3 flex-grow overflow-y-auto custom-scrollbar p-1 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: QUESTION STATS ==================== -->
+  <div id="modal-stats" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-4xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl relative space-y-4 max-h-[90vh] flex flex-col border border-white/50">
+      <button onclick="closeModal('modal-stats')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="text-lg font-black">Thống Kê Tỉ Lệ Đúng / Sai Từng Câu Hỏi</h3>
+      <div id="stats-content" class="space-y-3 flex-grow overflow-y-auto custom-scrollbar p-1 text-xs"></div>
+    </div>
+  </div>
+
+  <script>
+    const SECRET_TEACHER_CODE = "NK2026";
+    const LS_EXAMS_KEY = "EDUTEST_CUSTOM_EXAMS_V5";
+    const LS_SUBMISSIONS_KEY = "EDUTEST_SUBMISSIONS_V5";
+    const LS_TEACHERS_KEY = "EDUTEST_TEACHER_ACCOUNTS_V5";
+    const LS_CONTROLS_KEY = "EDUTEST_ROOM_CONTROLS_V5";
+    const channel = new BroadcastChannel('edutest_sync_channel_v5');
+
+    let roomControls = {
+      roomOpen: true,
+      scoreVisible: true,
+      answerVisible: true
+    };
+
+    // ĐẦY ĐỦ 40 CÂU HỎI MÃ ĐỀ FC6 CHUẨN KÈM BÀI ĐỌC
+    const DEFAULT_EXAMS = {
+      "FC6": {
+        code: "FC6",
+        title: "KIỂM TRA ĐÁNH GIÁ ĐỊNH KÌ HỌC KỲ I - ANH 11 (Mã đề FC6)",
+        timeLimitMinutes: 45,
+        passagesMap: {
+          1: `Thirty years on, Vietnam's membership in the Association of Southeast Asian Nations is widely seen as a turning point in its foreign policy - a strategic decision that helped pull the country out of Cold War isolation and embed it within a dynamic regional and global system.\nAs Vietnam commemorates three decades of membership, the country finds itself in a markedly different position than when it first joined the bloc in 1995. Once a diplomatically isolated state struggling under the weight of sanctions, Vietnam now stands as a proactive regional actor with expansive global partnerships and a promising economic clout. On July 28, 1995, in Brunei, the flag of the Socialist Republic of Vietnam was hoisted, marking its accession as the bloc's seventh member. "It was a hit-or-miss moment," said Nguyen Vu Tung, a former Vietnamese ambassador, noting that the decision was driven by both foreign policy and the need for a new economic development model. By joining, Vietnam aimed to create a peaceful environment to focus on its đổi mới (renewal) agenda.\nVietnam's road to ASEAN was paved by the end of the Cold War and the 1991 settlement of the Cambodian conflict. In the late 1980s, the Politburo introduced the concept of national interest and called for "more friends, fewer enemies," leading to a policy of diversifying and multilateralising relations. This strategic recalibration culminated in seeking ASEAN membership, which came just after the normalisation of ties with the United States.\nIn its early years, Vietnam approached the bloc with caution, being a "staunch guardian" of traditional principles like consensus and non-interference. However, its posture evolved as it gained diplomatic sophistication. Vietnam transitioned to an outward-looking actor, aligning with maritime states in advocating for a rules-based regional order. "ASEAN provided platforms for Vietnamese officials to unlearn Cold War rigid binary thinking and to internalise regional norms and multilateral diplomacy skills," noted researcher Hoang Thi Ha. "Those were crucial experiences that shape the country's broader global integration."\nOver three decades, Vietnam has made significant contributions: promoting the admission of Cambodia, Laos, and Myanmar; securing the Ha Noi Plan of Action in 1998; expanding the East Asia Forum in 2010; and pioneering virtual diplomacy during the COVID-19 pandemic in 2020. On the East Sea issue, Vietnam has leveraged ASEAN to press for international legal norms, specifically the 1982 UNCLOS. Today, while ASEAN remains a vital pillar of Vietnam's multi-polar strategy, challenges remain. As great-power rivalry intensifies, experts suggest ASEAN must adapt its "non-interference" principle to remain relevant and become more than just a "regional talking shop" in resolving conflicts like the civil war in Myanmar.`,
+          8: `THE HANOI CONVENTION AGAINST CYBERCRIME\nThe United Nations Convention against Cybercrime marks a groundbreaking initiative to confront one of the most critical challenges of the digital era. By fostering international cooperation and fortifying legal frameworks, (8) ______ for effectively combating cyber-dependent and cyber-enabled crimes. Formally titled to reflect an intensified global effort, this milestone highlights the importance of unity and responsibility in protecting the interconnected digital world.\nGiven that cybercrime is a major global risk, the Convention provides a globally coordinated response. (9) ______ it facilitates the access and exchange of electronic evidence, which is crucial for investigating transnational crimes. Effective law enforcement relies heavily on this cooperation, as cybercrime often spans multiple jurisdictions. Furthermore, the Convention is the first global agreement to specifically address and protect children from sexual violence facilitated by ICTs, (10) ______ to safeguard the most vulnerable.\nThe signing ceremony, scheduled to take place in Hanoi in mid-2025, holds dual significance. For Vietnam, it marks the first time the country's capital will be associated with a global multilateral treaty. Vietnam has been a proactive participant in the negotiation process, (11) ______. These legal changes, including the 2018 Law on Cyber Security and the 2024 Law on Data, reflect Vietnam's capacity to align domestic laws with international requirements.\nUltimately, the "Hanoi Convention" creates a lasting legacy that ties Vietnam's capital to a historic moment in international law. (12) ______ it reinforces Vietnam's commitment to international cooperation and elevates its diplomatic profile as a leader in the digital age.`,
+          13: `Vietnam has called on all ASEAN countries to work together to build and implement proper and effective education policies, thus restoring and maintaining the (13) ______ of learning activities. Over the past two years, COVID-19 has affected at least 180 million children and adolescents in ASEAN countries, (14) ______ 35 million students were unable to attend schools due to closures. The consequence of the pandemic may become more serious if countries do not act immediately. It is hoped that the region will be ready to respond to future challenges (15) ______ may seriously harm and interrupt studies by building a more flexible and self-reliant education system.\nIn Vietnam, considering education is the top national policy, the country spends at least 20% of its budget on education (16) ______ year. Furthermore, as the Chair of the ASEAN education cooperation in 2022-2023, Vietnam has identified a number of priorities. These focus on taking care of learners' mental health, ensuring access to equitable education, and promoting (17) ______ digital transformation to meet development requirements in the new context.`
+        },
+        questions: [
+          { id: 1, section: "Reading Comprehension 1", type: "mcq", question: "Which of the following is the best title for the passage?", options: ["A. The History of ASEAN's Formation and Expansion", "B. Vietnam and ASEAN: A Journey of Strategic Transformation", "C. Economic Miracles: How ASEAN Reshaped Vietnam's Economy", "D. The Future of Non-Interference in Southeast Asian Diplomacy"], answer: "B", explain: "Đoạn văn xoay quanh hành trình biến đổi chiến lược của Việt Nam từ khi gia nhập ASEAN năm 1995 cho đến nay." },
+          { id: 2, section: "Reading Comprehension 1", type: "mcq", question: "The word 'clout' in paragraph 2 is CLOSEST in meaning to", options: ["A. weakness", "B. influence", "C. uncertainty", "D. stagnation"], answer: "B", explain: "Từ 'clout' có nghĩa là quyền lực, sức ảnh hưởng (influence)." },
+          { id: 3, section: "Reading Comprehension 1", type: "mcq", question: "The word 'Those' in paragraph 4 refers to", options: ["A. regional norms", "B. binary thinking", "C. crucial experiences", "D. Vietnamese officials"], answer: "C", explain: "'Those' thay thế cho các trải nghiệm quan trọng (crucial experiences) đã thu nhận được." },
+          { id: 4, section: "Reading Comprehension 1", type: "mcq", question: "According to paragraph 2, what was a primary consideration for Vietnam when deciding to join ASEAN?", options: ["A. To dominate the regional security agenda immediately.", "B. To follow the successful economic models of neighboring 'miracle' economies.", "C. To limit its diplomatic relations to only Southeast Asian countries.", "D. To seek a military alliance against external Cold War threats."], answer: "B", explain: "Theo bài đọc, quyết định gia nhập driven by 'need for a new economic development model'." },
+          { id: 5, section: "Reading Comprehension 1", type: "mcq", question: "Which of the following is NOT mentioned as a contribution of Vietnam to ASEAN?", options: ["A. Advocating for the inclusion of Cambodia, Laos, and Myanmar.", "B. Promoting the 1982 UN Convention on the Law of the Sea.", "C. Hosting the inaugural ASEAN Defence Ministers' Meeting Plus.", "D. Leading the bloc's response to the COVID-19 pandemic through virtual platforms."], answer: "C", explain: "Ý C không được nhắc trực tiếp trong bài như một đóng góp liệt kê." },
+          { id: 6, section: "Reading Comprehension 1", type: "mcq", question: "Which of the following can be inferred from the passage about Vietnam's diplomatic evolution?", options: ["A. Vietnam has abandoned the principle of non-interference to please global powers.", "B. The country's diplomatic skills were largely developed through its interactions within ASEAN.", "C. Vietnam's early caution was due to its desire to lead the bloc's maritime strategy.", "D. Membership in ASEAN was a secondary priority compared to relations with the US."], answer: "B", explain: "Bài đề cập ASEAN cung cấp nền tảng giúp cán bộ VN tiếp thu kĩ năng ngoại giao đa phương." },
+          { id: 7, section: "Reading Comprehension 1", type: "mcq", question: "Which of the following statements best reflects the experts' view on ASEAN's future challenges?", options: ["A. The principle of sovereignty is being replaced by global governance.", "B. Great-power rivalry is the only factor hindering ASEAN's progress.", "C. Rigid adherence to non-interference may limit ASEAN's effectiveness in conflict resolution.", "D. ASEAN should stop being a 'talking shop' and focus solely on economic trade."], answer: "C", explain: "Chuyên gia gợi ý ASEAN cần điều chỉnh nguyên tắc 'không can thiệp' để giải quyết các xung đột hiệu quả hơn." },
+          // Cloze (8-17)
+          { id: 8, section: "Hanoi Convention Against Cybercrime", type: "mcq", question: "Question 8: Select the best option for blank (8)", options: ["A. the Convention lays the foundation", "B. having laid the foundation by the Convention", "C. the foundation being laid by the Convention", "D. for the Convention to lay the foundation"], answer: "A", explain: "Chủ ngữ chính của mệnh đề sau dấu phẩy là 'the Convention lays the foundation'." },
+          { id: 9, section: "Hanoi Convention Against Cybercrime", type: "mcq", question: "Question 9: Select the best option for blank (9)", options: ["A. Including a 24/7 network for urgent cooperation", "B. To include a 24/7 network for urgent cooperation", "C. By including a 24/7 network for urgent cooperation", "D. Included a 24/7 network for urgent cooperation"], answer: "C", explain: "Chỉ phương thức hành động: 'By including...' (Bằng cách bao gồm một mạng lưới 24/7...)." },
+          { id: 10, section: "Hanoi Convention Against Cybercrime", type: "mcq", question: "Question 10: Select the best option for blank (10)", options: ["A. that empowers governments with stronger tools", "B. which empowers governments with stronger tools", "C. empowering governments with stronger tools", "D. having empowered governments with stronger tools"], answer: "C", explain: "Rút gọn mệnh đề quan hệ dạng chủ động (present participle clause: empowering...)." },
+          { id: 11, section: "Hanoi Convention Against Cybercrime", type: "mcq", question: "Question 11: Select the best option for blank (11)", options: ["A. so that its cybersecurity policies could be enhanced", "B. while making significant strides in enhancing its cybersecurity policies", "C. because it has enhanced significantly its cybersecurity policies", "D. despite significant strides in enhancing its cybersecurity policies"], answer: "B", explain: "'while making significant strides...' phù hợp về ngữ nghĩa song song với hành động tham gia chủ động." },
+          { id: 12, section: "Hanoi Convention Against Cybercrime", type: "mcq", question: "Question 12: Select the best option for blank (12)", options: ["A. Associating the Convention's name with Hanoi", "B. The association of the Convention's name with Hanoi", "C. To associate the Convention's name with Hanoi", "D. When associating the Convention's name with Hanoi"], answer: "A", explain: "Danh từ danh động từ đóng vai trò chủ ngữ (Gerund phrase as subject)." },
+          { id: 13, section: "ASEAN Education Policy", type: "mcq", question: "Question 13: Select option for (13)", options: ["A. continuity", "B. evolution", "C. progression", "D. circulation"], answer: "A", explain: "'continuity of learning activities' (sự liên tục của các hoạt động học tập)." },
+          { id: 14, section: "ASEAN Education Policy", type: "mcq", question: "Question 14: Select option for (14)", options: ["A. so", "B. therefore", "C. while", "D. moreover"], answer: "C", explain: "'while' (trong khi) nối 2 mệnh đề tương phản/diễn tiến song song." },
+          { id: 15, section: "ASEAN Education Policy", type: "mcq", question: "Question 15: Select option for (15)", options: ["A. who", "B. that", "C. whom", "D. whose"], answer: "B", explain: "Dùng đại từ quan hệ 'that' thay thế cho danh từ chỉ vật 'future challenges'." },
+          { id: 16, section: "ASEAN Education Policy", type: "mcq", question: "Question 16: Select option for (16)", options: ["A. many", "B. other", "C. all", "D. each"], answer: "D", explain: "'each year' (mỗi năm) đi với danh từ số ít." },
+          { id: 17, section: "ASEAN Education Policy", type: "mcq", question: "Question 17: Select option for (17)", options: ["A. comprehensible", "B. apprehensive", "C. comprehensive", "D. ostensive"], answer: "C", explain: "'comprehensive digital transformation' (chuyển đổi số toàn diện)." },
+          // Arrangement & Stress & Grammar & Vocab (18-30)
+          { id: 18, section: "Sentence Arrangement", type: "mcq", question: "Question 18: Rearrange sentences (a-e) to make a meaningful paragraph:\na. Members of AYF hold regular meetings...\nb. Over the past decade, AYF has held meetings...\nc. These conferences aim to improve leadership...\nd. The ASEAN Youth Forum (AYF) is a program...\ne. In addition, the forum organizes an online space...", options: ["A. d - e - c - b - a", "B. d - c - a - b - e", "C. d - a - e - b - c", "D. d - b - a - e - c"], answer: "C", explain: "Trình tự hợp lý: Giới thiệu AYF (d) -> Hoạt động chính (a) -> Không gian trực tuyến (e) -> Tóm tắt các cuộc họp (b) -> Mục tiêu chung (c)." },
+          { id: 19, section: "Sentence Arrangement", type: "mcq", question: "Question 19: Rearrange exchange (a-e):\na. David: That's interesting. So, what's driving this shift...?\nb. Anna: Hi David! I heard you're visiting Vietnam...\nc. Anna: Well, the main factor is economic development...\nd. Anna: You're absolutely right! Vietnam has been undergoing...\ne. David: Hi Anna! Yes, I'm really impressed...", options: ["A. d - e - b - c - a", "B. b - a - c - e - d", "C. b - e - d - a - c", "D. e - a - b - d - c"], answer: "C", explain: "Trình tự hội thoại mở đầu chào hỏi và hỏi đáp logic b -> e -> d -> a -> c." },
+          { id: 20, section: "Sentence Arrangement", type: "mcq", question: "Question 20: Rearrange letter (a-c):\na. As part of the initiative, you will have the chance...\nb. We are delighted to announce a new ASEAN scholarship...\nc. To apply, please ensure that your academic transcripts...", options: ["A. b - a - c", "B. b - c - a", "C. a - b - c", "D. c - b - a"], answer: "A", explain: "Thông báo học bổng (b) -> Quyền lợi (a) -> Hướng dẫn nộp hồ sơ (c)." },
+          { id: 21, section: "Stress Position", type: "mcq", question: "Question 21: Choose the word whose stress position differs from the others:", options: ["A. honour", "B. grateful", "C. issue", "D. volunteer"], answer: "D", explain: "volunteer nhấn âm 3 (/ˌvɒl.ənˈtɪər/), các từ còn lại nhấn âm 1." },
+          { id: 22, section: "Stress Position", type: "mcq", question: "Question 22: Choose the word whose stress position differs from the others:", options: ["A. contribution", "B. prosperity", "C. equality", "D. appreciate"], answer: "A", explain: "contribution nhấn âm 3 (/ˌkɒn.trɪˈbjuː.ʃən/), các từ còn lại nhấn âm 2." },
+          { id: 23, section: "Grammar & Vocabulary", type: "mcq", question: "Question 23: ______ a strong and united ASEAN community is the ultimate goal of all member states.", options: ["A. Build", "B. Building", "C. Built", "D. Being built"], answer: "B", explain: "Danh động từ (Building) đóng vai trò làm chủ ngữ." },
+          { id: 24, section: "Grammar & Vocabulary", type: "mcq", question: "Question 24: The government is considering ______ more scholarships to students from ASEAN countries.", options: ["A. offer", "B. to offer", "C. offering", "D. offered"], answer: "C", explain: "Cấu trúc: consider + V-ing." },
+          { id: 25, section: "Grammar & Vocabulary", type: "mcq", question: "Question 25: The organization keeps ______ new ways to enhance educational cooperation among members.", options: ["A. exploring", "B. explore", "C. to explore", "D. explored"], answer: "A", explain: "Cấu trúc: keep + V-ing." },
+          { id: 26, section: "Grammar & Vocabulary", type: "mcq", question: "Question 26: They insisted on ______ a cultural exhibition during the economic summit to promote tourism.", options: ["A. organize", "B. to organize", "C. organizing", "D. organized"], answer: "C", explain: "Giới từ 'on' + V-ing (insist on doing sth)." },
+          { id: 27, section: "Grammar & Vocabulary", type: "mcq", question: "Question 27: Thailand proposed ______ the next ASEAN Para Games to show support for athletes with disabilities.", options: ["A. host", "B. hosting", "C. to host", "D. hosted"], answer: "B", explain: "Cấu trúc: propose + V-ing." },
+          { id: 28, section: "Grammar & Vocabulary", type: "mcq", question: "Question 28: By participating in various cultural exchanges, Vietnam has helped to promote a shared ASEAN ______", options: ["A. identity", "B. identification", "C. identical", "D. identically"], answer: "A", explain: "Danh từ 'identity' (bản sắc/nhận dạng): shared ASEAN identity." },
+          { id: 29, section: "Grammar & Vocabulary", type: "mcq", question: "Question 29: That ASEAN Summit tried to find appropriate ______ to further accelerate the course of building the ASEAN Community.", options: ["A. solutions", "B. applications", "C. volunteers", "D. objectives"], answer: "A", explain: "'appropriate solutions' (các giải pháp phù hợp)." },
+          { id: 30, section: "Grammar & Vocabulary", type: "mcq", question: "Question 30: Vietnam has successfully ______ its role as the ASEAN Chair several times, proving its leadership capacity.", options: ["A. fulfilled", "B. carried", "C. achieved", "D. completed"], answer: "A", explain: "'fulfill one's role' (hoàn thành tốt vai trò)." },
+          // Word Form & Rewrite (31-40) [tự luận / điền từ]
+          { id: 31, section: "Word Formation", type: "fill", question: "Question 31: Dolphins are highly ______ animals, using a complex system of clicks and whistles to talk to each other. (COMMUNICATION)", answer: "communicative", explain: "Cần tính từ: communicative (có tính giao tiếp cao)." },
+          { id: 32, section: "Word Formation", type: "fill", question: "Question 32: The journalist fled the country to avoid ______ imprisonment by the corrupted government. (POLICY)", answer: "political", explain: "Cần tính từ bổ nghĩa cho imprisonment: political imprisonment (việc bỏ tù vì lý do chính trị)." },
+          { id: 33, section: "Word Formation", type: "fill", question: "Question 33: The minority groups demand fair ______ in the local government so their specific needs and voices could be heard. (REPRESENTATIONAL)", answer: "representation", explain: "Cần danh từ: fair representation (sự đại diện công bằng)." },
+          { id: 34, section: "Word Formation", type: "fill", question: "Question 34: The sudden drop in the patient's blood pressure added a strong sense of ______ to the medical team's action. (URGE)", answer: "urgency", explain: "Cần danh từ sau 'sense of': urgency (sự khẩn cấp)." },
+          { id: 35, section: "Word Formation", type: "fill", question: "Question 35: The runner was ______ from the race after it was discovered that he had taken banned performance-enhancing drugs. (QUALIFIER)", answer: "disqualified", explain: "Bị động quá khứ: disqualified (bị tước quyền thi đấu)." },
+          { id: 36, section: "Sentence Transformation", type: "fill", question: "Question 36: Unless member states cooperate closely, they won't be able to solve environmental issues in the region. (Use 1st Conditional Sentence)\n→ If member states ...", answer: "cooperate closely, they won't be able to solve environmental issues in the region", explain: "Unless = If ... not." },
+          { id: 37, section: "Sentence Transformation", type: "fill", question: "Question 37: Singapore is a developed ASEAN country. Its education system is considered one of the best in the world. (Use Relative Clause, 'Whose')\n→ Singapore ...", answer: "whose education system is considered one of the best in the world, is a developed ASEAN country", explain: "Dùng đại từ quan hệ sở hữu 'whose education system'." },
+          { id: 38, section: "Sentence Transformation", type: "fill", question: "Question 38: The economic integration among ASEAN nations gives the impression of being very successful. (Use Stative Verb, 'Seem')\n→ The economic integration among ASEAN nations ...", answer: "seems to be very successful", explain: "Dùng động từ chỉ trạng thái: seems to be..." },
+          { id: 39, section: "Sentence Transformation", type: "fill", question: "Question 39: It is a great honor to represent Vietnam in the ASEAN Youth Volunteer. (Use Gerund as SUBJECT)\n→ ...", answer: "Representing Vietnam in the ASEAN Youth Volunteer is a great honor", explain: "Đưa V-ing (Representing...) lên làm chủ ngữ." },
+          { id: 40, section: "Sentence Transformation", type: "fill", question: "Question 40: I highly recommend that you read this article about Vietnam's economic contributions to ASEAN. (Use Modal verb, 'Should')\n→ You ...", answer: "should read this article about Vietnam's economic contributions to ASEAN", explain: "Dùng động từ khuyết thiếu: You should read..." }
+        ]
+      }
+    };
+
+    let examsData = { ...DEFAULT_EXAMS };
+    let currentExam = null;
+    let studentInfo = { name: '', class: '', teacher: '' };
+    let studentAnswers = {};
+    let timerInterval = null;
+    let timeRemainingSeconds = 0;
+    let totalTimeTakenSeconds = 0;
+    let currentTeacherUser = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadStoredExams();
+      loadRoomControls();
+      populateExamSelect();
+      updateStudentTeacherSelect();
+      checkTheme();
+
+      window.addEventListener('storage', (e) => handleSyncEvent(e.key));
+      channel.onmessage = (event) => {
+        if (event.data.type === 'SYNC_DATA') {
+          loadStoredExams();
+          loadRoomControls();
+          updateStudentTeacherSelect();
+          if (!document.getElementById("view-teacher").classList.contains("hidden")) {
+            renderTeacherDashboard();
+          }
+        }
+      };
+    });
+
+    function broadcastChange() {
+      localStorage.setItem('EDUTEST_SYNC_TRIGGER', Date.now().toString());
+      channel.postMessage({ type: 'SYNC_DATA' });
+    }
+
+    function handleSyncEvent(key) {
+      if (key === LS_TEACHERS_KEY) updateStudentTeacherSelect();
+      if (key === LS_EXAMS_KEY) {
+        loadStoredExams();
+        populateExamSelect();
+      }
+      if (key === LS_CONTROLS_KEY) loadRoomControls();
+      if (key === LS_SUBMISSIONS_KEY && !document.getElementById("view-teacher").classList.contains("hidden")) {
+        renderTeacherDashboard();
+      }
+    }
+
+    function loadRoomControls() {
+      const stored = localStorage.getItem(LS_CONTROLS_KEY);
+      if (stored) {
+        try { roomControls = JSON.parse(stored); } catch (e) {}
+      }
+      updateRoomBannerUI();
+    }
+
+    function saveRoomControls() {
+      localStorage.setItem(LS_CONTROLS_KEY, JSON.stringify(roomControls));
+      broadcastChange();
+      updateRoomBannerUI();
+    }
+
+    function updateRoomBannerUI() {
+      const banner = document.getElementById("room-status-banner");
+      const text = document.getElementById("room-status-text");
+      const badge = document.getElementById("room-status-badge");
+      const startBtn = document.getElementById("btn-start-exam");
+
+      if (roomControls.roomOpen) {
+        banner.className = "mb-5 p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-bold text-emerald-700 dark:text-emerald-300 flex items-center justify-between shadow-sm";
+        text.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5 text-sm"></i> Phòng thi đang MỞ - Sẵn sàng nhận bài làm`;
+        badge.textContent = "Đang mở";
+        badge.className = "px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[10px] uppercase tracking-wider font-extrabold shadow-sm";
+        if (startBtn) {
+          startBtn.disabled = false;
+          startBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        }
+      } else {
+        banner.className = "mb-5 p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800 text-xs font-bold text-red-700 dark:text-red-300 flex items-center justify-between shadow-sm";
+        text.innerHTML = `<i class="fa-solid fa-lock text-red-500 mr-1.5 text-sm"></i> Phòng thi đã bị KHÓA bởi Giáo viên!`;
+        badge.textContent = "Đã khóa";
+        badge.className = "px-2.5 py-1 rounded-lg bg-red-600 text-white text-[10px] uppercase tracking-wider font-extrabold shadow-sm";
+        if (startBtn) {
+          startBtn.disabled = true;
+          startBtn.classList.add("opacity-50", "cursor-not-allowed");
+        }
+      }
+    }
+
+    function toggleExamRoom() {
+      roomControls.roomOpen = !roomControls.roomOpen;
+      saveRoomControls();
+      updateTeacherControlUI();
+    }
+
+    function toggleScoreLock() {
+      roomControls.scoreVisible = !roomControls.scoreVisible;
+      saveRoomControls();
+      updateTeacherControlUI();
+    }
+
+    function toggleAnswerLock() {
+      roomControls.answerVisible = !roomControls.answerVisible;
+      saveRoomControls();
+      updateTeacherControlUI();
+    }
+
+    function updateTeacherControlUI() {
+      const roomLbl = document.getElementById("ctrl-room-status-label");
+      const roomBtn = document.getElementById("btn-toggle-room");
+      if (roomControls.roomOpen) {
+        roomLbl.textContent = "Đang Mở";
+        roomLbl.className = "text-sm font-extrabold text-emerald-600";
+        roomBtn.textContent = "Khóa Phòng Thi";
+        roomBtn.className = "px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold shadow-md transition";
+      } else {
+        roomLbl.textContent = "Đã Khóa";
+        roomLbl.className = "text-sm font-extrabold text-red-600";
+        roomBtn.textContent = "Mở Phòng Thi";
+        roomBtn.className = "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-md transition";
+      }
+
+      const scoreLbl = document.getElementById("ctrl-score-status-label");
+      const scoreBtn = document.getElementById("btn-toggle-score-lock");
+      if (roomControls.scoreVisible) {
+        scoreLbl.textContent = "Đang Mở (Hiện Điểm)";
+        scoreLbl.className = "text-sm font-extrabold text-emerald-600";
+        scoreBtn.textContent = "Khóa Điểm HS";
+        scoreBtn.className = "px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold shadow-md transition";
+      } else {
+        scoreLbl.textContent = "Đã Khóa Điểm";
+        scoreLbl.className = "text-sm font-extrabold text-amber-600";
+        scoreBtn.textContent = "Mở Điểm HS";
+        scoreBtn.className = "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-md transition";
+      }
+
+      const ansLbl = document.getElementById("ctrl-answer-status-label");
+      const ansBtn = document.getElementById("btn-toggle-answer-lock");
+      if (roomControls.answerVisible) {
+        ansLbl.textContent = "Đã Cho Phép Xem";
+        ansLbl.className = "text-sm font-extrabold text-emerald-600";
+        ansBtn.textContent = "Khóa Đáp Án";
+        ansBtn.className = "px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-md transition";
+      } else {
+        ansLbl.textContent = "Đã Khóa Đáp Án";
+        ansLbl.className = "text-sm font-extrabold text-blue-600";
+        ansBtn.textContent = "Mở Đáp Án";
+        ansBtn.className = "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold shadow-md transition";
+      }
+    }
+
+    function loadStoredExams() {
+      const stored = localStorage.getItem(LS_EXAMS_KEY);
+      if (stored) {
+        try { examsData = { ...DEFAULT_EXAMS, ...JSON.parse(stored) }; } catch (e) {}
+      }
+    }
+
+    function populateExamSelect() {
+      const select = document.getElementById("exam-select");
+      select.innerHTML = "";
+      Object.keys(examsData).forEach(code => {
+        const opt = document.createElement("option");
+        opt.value = code;
+        opt.textContent = `[Mã Đề ${code}] ${examsData[code].title} (${examsData[code].questions.length} câu)`;
+        select.appendChild(opt);
+      });
+    }
+
+    function updateStudentTeacherSelect() {
+      const select = document.getElementById("student-teacher-select");
+      select.innerHTML = "";
+      let teachers = JSON.parse(localStorage.getItem(LS_TEACHERS_KEY) || "[]");
+
+      if (teachers.length === 0) {
+        const defaultOpt = document.createElement("option");
+        defaultOpt.value = "";
+        defaultOpt.textContent = "-- Chưa có Giáo viên đăng ký --";
+        select.appendChild(defaultOpt);
+      } else {
+        const placeholderOpt = document.createElement("option");
+        placeholderOpt.value = "";
+        placeholderOpt.textContent = "-- Chọn Giáo Viên Giảng Dạy --";
+        select.appendChild(placeholderOpt);
+
+        teachers.forEach(t => {
+          const opt = document.createElement("option");
+          opt.value = t.username;
+          opt.textContent = t.username;
+          select.appendChild(opt);
+        });
+      }
+    }
+
+    function checkTheme() {
+      if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    }
+
+    function toggleTheme() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else if (document.exitFullscreen) document.exitFullscreen();
+    }
+
+    function switchView(viewName) {
+      document.getElementById("view-landing").classList.add("hidden");
+      document.getElementById("view-exam").classList.add("hidden");
+      document.getElementById("view-result").classList.add("hidden");
+      document.getElementById("view-teacher").classList.add("hidden");
+
+      if (viewName === 'landing') document.getElementById("view-landing").classList.remove("hidden");
+      if (viewName === 'exam') document.getElementById("view-exam").classList.remove("hidden");
+      if (viewName === 'result') document.getElementById("view-result").classList.remove("hidden");
+      if (viewName === 'teacher') document.getElementById("view-teacher").classList.remove("hidden");
+    }
+
+    function handleStartExam(e) {
+      e.preventDefault();
+      loadRoomControls();
+      if (!roomControls.roomOpen) {
+        alert("Phòng thi hiện đang bị khóa! Vui lòng chờ Giáo viên mở phòng thi.");
+        return;
+      }
+
+      const name = document.getElementById("student-name").value.trim();
+      const sClass = document.getElementById("student-class").value.trim();
+      const teacher = document.getElementById("student-teacher-select").value;
+      const examCode = document.getElementById("exam-select").value;
+
+      if (!teacher) {
+        alert("Vui lòng chọn Giáo viên giảng dạy!");
+        return;
+      }
+
+      if (!name || !sClass || !examCode) return;
+
+      studentInfo = { name, class: sClass, teacher };
+      currentExam = examsData[examCode];
+      studentAnswers = {};
+
+      document.getElementById("exam-title-display").textContent = currentExam.title;
+      document.getElementById("exam-student-info-display").textContent = `Học sinh: ${studentInfo.name} | Lớp: ${studentInfo.class} | GV: ${studentInfo.teacher}`;
+      document.getElementById("total-count-text").textContent = currentExam.questions.length;
+
+      renderQuestions();
+      renderNavButtons();
+      updateProgress();
+
+      timeRemainingSeconds = currentExam.timeLimitMinutes * 60;
+      totalTimeTakenSeconds = 0;
+      startTimer();
+      switchView('exam');
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeRemainingSeconds--;
+        totalTimeTakenSeconds++;
+        const mins = Math.floor(timeRemainingSeconds / 60);
+        const secs = timeRemainingSeconds % 60;
+        document.getElementById("timer-display").textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+        if (timeRemainingSeconds <= 0) {
+          clearInterval(timerInterval);
+          alert("Đã hết thời gian làm bài!");
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById("questions-container");
+      container.innerHTML = "";
+
+      const passagesMap = currentExam.passagesMap || {};
+
+      currentExam.questions.forEach((q, idx) => {
+        if (passagesMap[q.id]) {
+          const pCard = document.createElement("div");
+          pCard.className = "glass-card rounded-2xl p-5 shadow-md space-y-2 border-l-4 border-emerald-500 bg-emerald-50/20";
+          pCard.innerHTML = `
+            <div class="font-extrabold text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-book-open"></i> Đoạn Văn Đọc Hiểu (Hiển thị trước Câu ${q.id})
+            </div>
+            <div class="text-sm leading-relaxed whitespace-pre-line text-slate-700 dark:text-slate-300 font-serif">${passagesMap[q.id]}</div>
+          `;
+          container.appendChild(pCard);
+        }
+
+        const card = document.createElement("div");
+        card.id = `q-card-${q.id}`;
+        card.className = "glass-card rounded-2xl p-5 sm:p-6 shadow-lg space-y-4 border border-slate-200/60 dark:border-slate-800";
+
+        let inputHtml = "";
+        if (q.type === "mcq") {
+          inputHtml = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+            ${q.options.map((opt) => {
+              const letter = opt.charAt(0);
+              return `
+                <label class="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800 hover:bg-emerald-50/80 dark:hover:bg-slate-800/80 cursor-pointer transition">
+                  <input type="radio" name="q-${q.id}" value="${letter}" onchange="selectAnswer(${q.id}, '${letter}')" ${studentAnswers[q.id] === letter ? 'checked' : ''} class="w-4 h-4 text-emerald-600">
+                  <span class="text-sm font-semibold">${opt}</span>
+                </label>
+              `;
+            }).join('')}
+          </div>`;
+        } else {
+          inputHtml = `
+            <div class="mt-3">
+              <input type="text" onchange="inputAnswer(${q.id}, this.value)" placeholder="Nhập câu trả lời..." value="${studentAnswers[q.id] || ''}" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-semibold outline-none focus:border-emerald-500 transition">
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="font-bold text-base text-slate-900 dark:text-white flex items-start gap-3">
+            <span class="px-3 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-xs font-black shadow-sm shrink-0">Câu ${q.id}</span>
+            <span class="leading-snug">${q.question}</span>
+          </div>
+          ${inputHtml}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderNavButtons() {
+      const container = document.getElementById("nav-question-buttons");
+      container.innerHTML = "";
+      currentExam.questions.forEach((q) => {
+        const btn = document.createElement("button");
+        btn.id = `nav-btn-${q.id}`;
+        btn.onclick = () => document.getElementById(`q-card-${q.id}`).scrollIntoView({ behavior: 'smooth' });
+        btn.className = getNavBtnClass(q.id);
+        btn.textContent = q.id;
+        container.appendChild(btn);
+      });
+    }
+
+    function getNavBtnClass(qId) {
+      let base = "w-9 h-9 rounded-xl text-xs font-black border flex items-center justify-center transition shadow-sm ";
+      if (studentAnswers[qId]) return base + "bg-emerald-500 text-white border-emerald-600 shadow-emerald-500/30";
+      return base + "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200";
+    }
+
+    function selectAnswer(qId, val) {
+      studentAnswers[qId] = val;
+      updateProgress();
+      document.getElementById(`nav-btn-${qId}`).className = getNavBtnClass(qId);
+    }
+
+    function inputAnswer(qId, val) {
+      if (val.trim()) studentAnswers[qId] = val.trim();
+      else delete studentAnswers[qId];
+      updateProgress();
+      document.getElementById(`nav-btn-${qId}`).className = getNavBtnClass(qId);
+    }
+
+    function updateProgress() {
+      const answeredCount = Object.keys(studentAnswers).length;
+      const total = currentExam.questions.length;
+      const percent = Math.round((answeredCount / total) * 100);
+      document.getElementById("answered-count-text").textContent = answeredCount;
+      document.getElementById("progress-percent-text").textContent = `${percent}%`;
+      document.getElementById("progress-bar-fill").style.width = `${percent}%`;
+    }
+
+    function confirmSubmitExam() {
+      if (confirm("Bạn có chắc chắn muốn nộp bài thi không?")) submitExam();
+    }
+
+    function checkAnswerCorrect(userVal, targetAnswerStr) {
+      if (!userVal) return false;
+      const validAnswers = targetAnswerStr.split('|').map(a => normalizeStr(a));
+      const userNorm = normalizeStr(userVal);
+      return validAnswers.includes(userNorm);
+    }
+
+    function normalizeStr(str) {
+      return str.toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+
+    function submitExam() {
+      if (timerInterval) clearInterval(timerInterval);
+      loadRoomControls();
+
+      let correctCount = 0;
+      const totalQ = currentExam.questions.length;
+
+      currentExam.questions.forEach(q => {
+        const userAns = studentAnswers[q.id];
+        if (checkAnswerCorrect(userAns, q.answer)) {
+          correctCount++;
+        }
+      });
+
+      const score = ((correctCount / totalQ) * 10).toFixed(1);
+      document.getElementById("result-student-name").textContent = studentInfo.name;
+      document.getElementById("result-student-meta").textContent = `Lớp: ${studentInfo.class} | GV: ${studentInfo.teacher} | Đề: ${currentExam.code}`;
+      document.getElementById("score-display-big").textContent = score;
+
+      const scoreVisibleDiv = document.getElementById("score-visible-content");
+      const scoreLockedDiv = document.getElementById("score-locked-content");
+      const explainBtn = document.getElementById("btn-toggle-explain");
+
+      if (roomControls.scoreVisible) {
+        scoreVisibleDiv.classList.remove("hidden");
+        scoreLockedDiv.classList.add("hidden");
+      } else {
+        scoreVisibleDiv.classList.add("hidden");
+        scoreLockedDiv.classList.remove("hidden");
+      }
+
+      if (roomControls.answerVisible) {
+        explainBtn.disabled = false;
+        explainBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        explainBtn.innerHTML = `<i class="fa-solid fa-key mr-1.5"></i> Xem Đáp Án & Lời Giải Chi Tiết`;
+      } else {
+        explainBtn.disabled = true;
+        explainBtn.classList.add("opacity-50", "cursor-not-allowed");
+        explainBtn.innerHTML = `<i class="fa-solid fa-lock mr-1.5"></i> Lời giải đang bị khóa`;
+      }
+
+      renderResultDetails(studentAnswers);
+
+      saveSubmissionRecord({
+        id: Date.now(),
+        date: new Date().toLocaleString('vi-VN'),
+        name: studentInfo.name,
+        class: studentInfo.class,
+        teacher: studentInfo.teacher,
+        examCode: currentExam.code,
+        score: parseFloat(score),
+        timeTaken: `${Math.ceil(totalTimeTakenSeconds / 60)} phút`,
+        answers: { ...studentAnswers }
+      });
+
+      switchView('result');
+    }
+
+    function renderResultDetails(answersToRender) {
+      const container = document.getElementById("result-details-container");
+      container.innerHTML = "";
+
+      currentExam.questions.forEach(q => {
+        const userAns = answersToRender[q.id] || "Chưa làm";
+        const isCorrect = checkAnswerCorrect(userAns, q.answer);
+
+        const card = document.createElement("div");
+        card.className = `glass-card rounded-2xl p-4 sm:p-5 border-l-4 ${isCorrect ? 'border-emerald-500 bg-emerald-50/20' : 'border-red-500 bg-red-50/20'} space-y-2 shadow-sm`;
+        card.innerHTML = `
+          <h5 class="font-bold text-sm flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-lg text-xs ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'} font-black">
+              Câu ${q.id}: ${isCorrect ? 'ĐÚNG' : 'SAI'}
+            </span>
+            <span>${q.question}</span>
+          </h5>
+          <div class="text-xs space-y-1 pl-1">
+            <p><strong>Bài làm của bạn:</strong> <span class="${isCorrect ? 'text-emerald-600 font-extrabold' : 'text-red-500 font-extrabold'}">${userAns}</span></p>
+            <p><strong>Đáp án chuẩn:</strong> <span class="text-emerald-600 font-extrabold">${q.answer.replace(/\|/g, ' HOẶC ')}</span></p>
+          </div>
+          <div class="explanation-box hidden pt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 bg-emerald-50/60 dark:bg-emerald-950/40 p-3 rounded-xl">
+            <strong class="text-emerald-700 dark:text-emerald-300 font-black"><i class="fa-solid fa-lightbulb mr-1"></i> Lời giải chi tiết:</strong> ${q.explain || 'Không có.'}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleExplanations() {
+      loadRoomControls();
+      if (!roomControls.answerVisible) {
+        alert("Lời giải và đáp án hiện đang bị khóa bởi Giáo viên!");
+        return;
+      }
+      document.querySelectorAll(".explanation-box").forEach(box => box.classList.toggle("hidden"));
+    }
+
+    function openCreateCustomExamModal() {
+      document.getElementById("custom-exam-code").value = "FC" + Math.floor(Math.random() * 90 + 10);
+      document.getElementById("custom-exam-title").value = "KIỂM TRA ĐÁNH GIÁ HKI - FC0";
+      document.getElementById("custom-passages-container").innerHTML = "";
+      buildCustomExamFormFields();
+      document.getElementById("modal-create-exam").classList.remove("hidden");
+    }
+
+    function addPassageInputBox(atQuestion = 1, text = "") {
+      const container = document.getElementById("custom-passages-container");
+      const div = document.createElement("div");
+      div.className = "p-3.5 rounded-2xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20 space-y-2 relative passage-item";
+      div.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-bold text-emerald-700 dark:text-emerald-300">Hiển thị trước câu số: </label>
+            <input type="number" class="passage-q-num w-16 px-2 py-1 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-bold bg-white dark:bg-slate-900 outline-none" value="${atQuestion}" min="1" max="50">
+          </div>
+          <button type="button" onclick="this.closest('.passage-item').remove()" class="text-red-500 hover:text-red-700 text-xs font-bold"><i class="fa-solid fa-trash"></i> Xóa đoạn văn</button>
+        </div>
+        <div>
+          <textarea class="passage-text-content w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs outline-none font-serif" rows="3" placeholder="Nhập hoặc dán nội dung đoạn văn đọc hiểu tại đây...">${text}</textarea>
+        </div>
+      `;
+      container.appendChild(div);
+    }
+
+    function buildCustomExamFormFields() {
+      const count = parseInt(document.getElementById("custom-exam-count").value) || 40;
+      const container = document.getElementById("custom-questions-inputs-container");
+      container.innerHTML = "";
+
+      for (let i = 1; i <= count; i++) {
+        const item = document.createElement("div");
+        item.className = "p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 space-y-3";
+        item.innerHTML = `
+          <div class="flex items-center justify-between font-bold text-xs text-emerald-600">
+            <span>Câu số ${i}</span>
+            <div class="flex items-center gap-2">
+              <label class="text-[11px] font-bold text-slate-500">Loại câu:</label>
+              <select id="cust-type-${i}" onchange="toggleQuestionTypeFields(${i})" class="px-2 py-1 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-bold bg-white dark:bg-slate-900 outline-none">
+                <option value="mcq">Trắc nghiệm (A, B, C, D)</option>
+                <option value="fill">Điền từ / Tự luận</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-slate-500 mb-1">Nội dung câu hỏi</label>
+            <input type="text" id="cust-q-${i}" placeholder="Ví dụ: Choose the correct answer: He is ______ student..." class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold outline-none">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div id="cust-opt-box-${i}">
+              <label class="block text-[10px] font-bold text-slate-500 mb-1">Các lựa chọn (A, B, C, D phân cách bằng dấu phẩy)</label>
+              <input type="text" id="cust-opt-${i}" value="A. Option A, B. Option B, C. Option C, D. Option D" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs outline-none">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-emerald-600 mb-1">Đáp án đúng & Lời giải</label>
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="cust-ans-${i}" placeholder="Đáp án (A hoặc từ)" value="A" class="px-3 py-2 rounded-xl border border-emerald-300 dark:border-emerald-700 bg-white dark:bg-slate-900 text-xs font-bold outline-none">
+                <input type="text" id="cust-exp-${i}" placeholder="Lời giải chi tiết" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs outline-none">
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      }
+    }
+
+    function toggleQuestionTypeFields(i) {
+      const typeVal = document.getElementById(`cust-type-${i}`).value;
+      const optBox = document.getElementById(`cust-opt-box-${i}`);
+      if (typeVal === 'fill') {
+        optBox.classList.add('hidden');
+      } else {
+        optBox.classList.remove('hidden');
+      }
+    }
+
+    function saveCustomExamData() {
+      const code = document.getElementById("custom-exam-code").value.trim().toUpperCase();
+      const title = document.getElementById("custom-exam-title").value.trim();
+      const timeLimit = parseInt(document.getElementById("custom-exam-time").value) || 45;
+      const count = parseInt(document.getElementById("custom-exam-count").value) || 40;
+
+      if (!code || !title) {
+        alert("Vui lòng nhập đầy đủ mã đề và tiêu đề!");
+        return;
+      }
+
+      let passagesMap = {};
+      document.querySelectorAll(".passage-item").forEach(item => {
+        const qNum = parseInt(item.querySelector(".passage-q-num").value) || 1;
+        const text = item.querySelector(".passage-text-content").value.trim();
+        if (text) {
+          passagesMap[qNum] = text;
+        }
+      });
+
+      let questions = [];
+      for (let i = 1; i <= count; i++) {
+        const qType = document.getElementById(`cust-type-${i}`).value;
+        const qText = document.getElementById(`cust-q-${i}`).value.trim() || `Câu hỏi số ${i}`;
+        const answer = document.getElementById(`cust-ans-${i}`).value.trim() || "A";
+        const explain = document.getElementById(`cust-exp-${i}`).value.trim() || "Lời giải chuẩn chi tiết.";
+
+        let options = [];
+        if (qType === 'mcq') {
+          const optRaw = document.getElementById(`cust-opt-${i}`).value;
+          options = optRaw.split(',').map(o => o.trim()).filter(Boolean);
+        }
+
+        questions.push({
+          id: i,
+          section: "Custom",
+          type: qType,
+          question: qText,
+          options: options,
+          answer: answer,
+          explain: explain
+        });
+      }
+
+      let customExams = JSON.parse(localStorage.getItem(LS_EXAMS_KEY) || "{}");
+      customExams[code] = {
+        code: code,
+        title: title,
+        timeLimitMinutes: timeLimit,
+        passagesMap: passagesMap,
+        questions: questions
+      };
+
+      localStorage.setItem(LS_EXAMS_KEY, JSON.stringify(customExams));
+      broadcastChange();
+      loadStoredExams();
+      populateExamSelect();
+
+      closeModal("modal-create-exam");
+      alert(`Đã lưu thành công đề thi tùy chỉnh [${code}] với ${count} câu hỏi và các đoạn văn đọc hiểu đã cấu hình!`);
+    }
+
+    function viewStudentSubmission(subId) {
+      let subs = JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]");
+      const sub = subs.find(s => s.id === subId);
+      if (!sub) return;
+
+      document.getElementById("student-detail-title").textContent = `Bài làm của: ${sub.name} (Lớp: ${sub.class} - GV: ${sub.teacher}) - Điểm: ${sub.score}`;
+      const container = document.getElementById("student-detail-content");
+      container.innerHTML = "";
+
+      const exam = examsData[sub.examCode] || currentExam;
+      if (!exam) return;
+
+      exam.questions.forEach(q => {
+        const studentAns = sub.answers && sub.answers[q.id] ? sub.answers[q.id] : "Chưa làm";
+        const isCorrect = checkAnswerCorrect(studentAns, q.answer);
+
+        const div = document.createElement("div");
+        div.className = `p-3.5 rounded-xl border-l-4 ${isCorrect ? 'border-emerald-500 bg-emerald-50/40' : 'border-red-500 bg-red-50/40'} space-y-1`;
+        div.innerHTML = `
+          <div class="font-bold text-slate-900 dark:text-white">Câu ${q.id}: ${q.question}</div>
+          <div class="text-xs">Học sinh chọn: <strong class="${isCorrect ? 'text-emerald-600' : 'text-red-500'}">${studentAns}</strong> | Đáp án chuẩn: <strong class="text-emerald-600">${q.answer}</strong> (${isCorrect ? 'ĐÚNG' : 'SAI'})</div>
+          <div class="text-[11px] text-slate-500 italic">Lời giải: ${q.explain || 'Không có'}</div>
+        `;
+        container.appendChild(div);
+      });
+
+      document.getElementById("modal-student-detail").classList.remove("hidden");
+    }
+
+    function openStatsModal() {
+      let subs = JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]");
+      const container = document.getElementById("stats-content");
+      container.innerHTML = "";
+
+      if (subs.length === 0) {
+        container.innerHTML = `<p class="text-center text-slate-400 p-4">Chưa có bài nộp nào để thống kê.</p>`;
+        document.getElementById("modal-stats").classList.remove("hidden");
+        return;
+      }
+
+      let stats = {};
+      if (!currentExam) currentExam = examsData["FC6"];
+
+      currentExam.questions.forEach(q => {
+        stats[q.id] = { correct: 0, wrong: 0, text: q.question, section: q.section, type: q.type };
+      });
+
+      subs.forEach(s => {
+        if (s.answers) {
+          currentExam.questions.forEach(q => {
+            const ans = s.answers[q.id];
+            if (checkAnswerCorrect(ans, q.answer)) {
+              stats[q.id].correct++;
+            } else {
+              stats[q.id].wrong++;
+            }
+          });
+        }
+      });
+
+      Object.keys(stats).forEach(qId => {
+        const item = stats[qId];
+        const totalSub = subs.length;
+        const correctPercent = Math.round((item.correct / totalSub) * 100);
+
+        const row = document.createElement("div");
+        row.className = "p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 space-y-1.5 shadow-sm";
+        row.innerHTML = `
+          <div class="flex justify-between font-extrabold text-xs">
+            <span>Câu ${qId} [Loại: ${item.type === 'mcq' ? 'Trắc nghiệm' : 'Điền từ'}]</span>
+            <span class="text-emerald-600">Đúng: ${item.correct} (${correctPercent}%) | Sai: ${item.wrong} (${100 - correctPercent}%)</span>
+          </div>
+          <div class="text-slate-600 dark:text-slate-300 truncate">${item.text}</div>
+          <div class="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden flex shadow-inner">
+            <div class="bg-emerald-500 h-full" style="width: ${correctPercent}%"></div>
+            <div class="bg-red-500 h-full" style="width: ${100 - correctPercent}%"></div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      document.getElementById("modal-stats").classList.remove("hidden");
+    }
+
+    function openAnswerKeyEditorModal() {
+      const select = document.getElementById("edit-exam-code-select");
+      select.innerHTML = "";
+      Object.keys(examsData).forEach(code => {
+        const opt = document.createElement("option");
+        opt.value = code;
+        opt.textContent = `Mã đề: ${code} - ${examsData[code].title}`;
+        select.appendChild(opt);
+      });
+      populateAnswerEditorForm();
+      document.getElementById("modal-answer-editor").classList.remove("hidden");
+    }
+
+    function populateAnswerEditorForm() {
+      const code = document.getElementById("edit-exam-code-select").value;
+      const exam = examsData[code];
+      const container = document.getElementById("edit-questions-list-container");
+      container.innerHTML = "";
+
+      if (!exam || !exam.questions) return;
+
+      exam.questions.forEach((q) => {
+        const item = document.createElement("div");
+        item.className = "p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 space-y-2 shadow-sm";
+        item.innerHTML = `
+          <div class="flex items-center justify-between font-extrabold text-xs">
+            <span>Câu ${q.id}: ${q.question.substring(0, 60)}...</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 text-[10px]">${q.type.toUpperCase()}</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div>
+              <label class="block text-[10px] font-black text-emerald-600 mb-1">Đáp án đúng (cách nhau bởi |)</label>
+              <input type="text" id="edit-ans-${q.id}" value="${q.answer}" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-bold outline-none">
+            </div>
+            <div>
+              <label class="block text-[10px] font-black text-slate-500 mb-1">Lời giải chi tiết</label>
+              <input type="text" id="edit-exp-${q.id}" value="${q.explain || ''}" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs outline-none">
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function saveModifiedAnswers() {
+      const code = document.getElementById("edit-exam-code-select").value;
+      const exam = examsData[code];
+
+      if (!exam || !exam.questions) return;
+
+      exam.questions.forEach(q => {
+        const ansInput = document.getElementById(`edit-ans-${q.id}`);
+        const expInput = document.getElementById(`edit-exp-${q.id}`);
+        if (ansInput) q.answer = ansInput.value.trim();
+        if (expInput) q.explain = expInput.value.trim();
+      });
+
+      let customExams = JSON.parse(localStorage.getItem(LS_EXAMS_KEY) || "{}");
+      customExams[code] = exam;
+      localStorage.setItem(LS_EXAMS_KEY, JSON.stringify(customExams));
+      broadcastChange();
+
+      closeModal("modal-answer-editor");
+      alert(`Đã lưu cập nhật đáp án cho đề ${code} và đồng bộ dữ liệu!`);
+    }
+
+    function openTeacherAuthModal() {
+      if (currentTeacherUser) {
+        renderTeacherDashboard();
+        switchView('teacher');
+      } else {
+        document.getElementById("modal-teacher-auth").classList.remove("hidden");
+      }
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
+
+    function switchAuthTab(tab) {
+      if (tab === 'login') {
+        document.getElementById("form-auth-login").classList.remove("hidden");
+        document.getElementById("form-auth-register").classList.add("hidden");
+      } else {
+        document.getElementById("form-auth-register").classList.remove("hidden");
+        document.getElementById("form-auth-login").classList.add("hidden");
+      }
+    }
+
+    function handleTeacherRegister(e) {
+      e.preventDefault();
+      const username = document.getElementById("reg-username").value.trim();
+      const password = document.getElementById("reg-password").value.trim();
+      const authCode = document.getElementById("reg-auth-code").value.trim();
+
+      if (authCode !== SECRET_TEACHER_CODE) {
+        alert("Mã xác nhận nội bộ không chính xác!");
+        return;
+      }
+
+      let teachers = JSON.parse(localStorage.getItem(LS_TEACHERS_KEY) || "[]");
+      if (teachers.some(t => t.username === username)) {
+        alert("Tên tài khoản này đã tồn tại!");
+        return;
+      }
+
+      teachers.push({ username, password });
+      localStorage.setItem(LS_TEACHERS_KEY, JSON.stringify(teachers));
+      broadcastChange();
+
+      updateStudentTeacherSelect();
+      alert(`Đăng ký Giáo viên [${username}] thành công!`);
+      switchAuthTab('login');
+    }
+
+    function handleTeacherLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById("login-username").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+      let teachers = JSON.parse(localStorage.getItem(LS_TEACHERS_KEY) || "[]");
+
+      if ((username === 'admin' && password === 'admin') || teachers.some(t => t.username === username && t.password === password)) {
+        currentTeacherUser = username;
+        document.getElementById("teacher-btn-text").textContent = `GV: ${username}`;
+        closeModal("modal-teacher-auth");
+        renderTeacherDashboard();
+        switchView('teacher');
+      } else {
+        alert("Sai tên đăng nhập hoặc mật khẩu!");
+      }
+    }
+
+    function logoutTeacher() {
+      currentTeacherUser = null;
+      document.getElementById("teacher-btn-text").textContent = "Dành cho Giáo viên";
+      switchView('landing');
+    }
+
+    function saveSubmissionRecord(record) {
+      let subs = JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]");
+      subs.unshift(record);
+      localStorage.setItem(LS_SUBMISSIONS_KEY, JSON.stringify(subs));
+      broadcastChange();
+    }
+
+    function renderTeacherDashboard() {
+      loadRoomControls();
+      updateTeacherControlUI();
+
+      const subs = JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]");
+      document.getElementById("stat-total-submissions").textContent = subs.length;
+      if (subs.length > 0) {
+        const sum = subs.reduce((a, b) => a + b.score, 0);
+        document.getElementById("stat-avg-score").textContent = (sum / subs.length).toFixed(1);
+        document.getElementById("stat-max-score").textContent = Math.max(...subs.map(s => s.score)).toFixed(1);
+        const pass = subs.filter(s => s.score >= 5.0).length;
+        document.getElementById("stat-pass-rate").textContent = `${Math.round((pass / subs.length) * 100)}%`;
+      }
+      populateClassFilterOptions(subs);
+      renderTeacherTable();
+    }
+
+    function populateClassFilterOptions(subs) {
+      const classSelect = document.getElementById("teacher-class-filter");
+      const currentSelected = classSelect.value;
+      const classes = [...new Set(subs.map(s => s.class))].sort();
+
+      classSelect.innerHTML = `<option value="">-- Lọc tất cả các lớp --</option>`;
+      classes.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = `Lớp: ${c}`;
+        if (c === currentSelected) opt.selected = true;
+        classSelect.appendChild(opt);
+      });
+    }
+
+    function getScoreBadgeClass(score) {
+      if (score >= 8.0) return "bg-emerald-100 text-emerald-800 border border-emerald-300 font-black"; 
+      if (score >= 6.5) return "bg-blue-100 text-blue-800 border border-blue-300 font-bold";       
+      if (score >= 5.0) return "bg-amber-100 text-amber-800 border border-amber-300 font-bold";     
+      return "bg-red-100 text-red-800 border border-red-300 font-bold";                             
+    }
+
+    function renderTeacherTable() {
+      const subs = JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]");
+      const search = document.getElementById("teacher-search-input").value.toLowerCase();
+      const selectedClass = document.getElementById("teacher-class-filter").value;
+      const tbody = document.getElementById("teacher-records-tbody");
+      tbody.innerHTML = "";
+
+      const filtered = subs.filter(s => {
+        const matchSearch = s.name.toLowerCase().includes(search) || s.teacher.toLowerCase().includes(search);
+        const matchClass = selectedClass === "" || s.class === selectedClass;
+        return matchSearch && matchClass;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">Không tìm thấy bài nộp phù hợp.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 dark:hover:bg-slate-900/50 transition";
+        tr.innerHTML = `
+          <td class="p-3.5 text-slate-500">${s.date}</td>
+          <td class="p-3.5 font-bold">${s.name}</td>
+          <td class="p-3.5"><span class="px-2.5 py-1 rounded-xl bg-slate-200 dark:bg-slate-800 font-extrabold text-xs">${s.class}</span></td>
+          <td class="p-3.5">${s.teacher}</td>
+          <td class="p-3.5"><span class="px-2.5 py-1 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-extrabold text-xs">${s.examCode}</span></td>
+          <td class="p-3.5 text-center"><span class="px-3 py-1 rounded-xl ${getScoreBadgeClass(s.score)}">${s.score}</span></td>
+          <td class="p-3.5 text-right space-x-2">
+            <button onclick="viewStudentSubmission(${s.id})" class="text-emerald-600 hover:text-emerald-700 font-extrabold text-xs bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1.5 rounded-xl transition" title="Xem chi tiết"><i class="fa-solid fa-eye mr-1"></i> Xem bài</button>
+            <button onclick="deleteSub(${s.id})" class="text-red-500 hover:text-red-700 p-1.5" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function deleteSub(id) {
+      if (confirm("Thầy/Cô có chắc muốn xóa bài làm này?")) {
+        let subs = JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]");
+        subs = subs.filter(s => s.id !== id);
+        localStorage.setItem(LS_SUBMISSIONS_KEY, JSON.stringify(subs));
+        broadcastChange();
+        renderTeacherDashboard();
+      }
+    }
+  </script>
+</body>
+</html>
