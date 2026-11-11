@@ -36,18 +36,18 @@
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .glass-card {
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.05);
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.06);
     }
     .dark .glass-card {
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(15, 23, 42, 0.90);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+      box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.35);
     }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
@@ -71,9 +71,14 @@
       </div>
 
       <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Đèn báo trạng thái đồng bộ đa máy -->
+        <div id="sync-status-indicator" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold" title="Hệ thống tự động đồng bộ dữ liệu giữa các máy">
+          <i class="fa-solid fa-cloud-arrow-down animate-bounce"></i> <span id="sync-status-text">Đã đồng bộ</span>
+        </div>
+
         <button id="nav-teacher-btn" onclick="openTeacherAuthModal()" class="px-3.5 py-2 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-emerald-500 hover:text-white text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-user-shield text-emerald-600 dark:text-emerald-400"></i>
-          <span class="hidden sm:inline" id="teacher-btn-text">Giáo viên</span>
+          <span class="hidden sm:inline" id="teacher-btn-text">Giáo viên </span>
         </button>
         <button onclick="toggleFullScreen()" class="p-2.5 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition shadow-sm" title="Toàn Màn Hình">
           <i class="fa-solid fa-expand" id="fs-icon"></i>
@@ -107,7 +112,7 @@
         <form id="student-form" onsubmit="handleStartExam(event)" class="space-y-4">
           <div>
             <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1.5">Họ và Tên Học Sinh <span class="text-red-500">*</span></label>
-            <input type="text" id="student-name" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
+            <input type="text" id="student-name" required placeholder="Ví dụ: Nguyễn Văn X" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -241,30 +246,30 @@
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
           <div>
             <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Trạng Thái Phòng Thi</span>
-            <p id="ctrl-room-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở</p>
+            <p id="ctrl-room-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở </p>
           </div>
           <button id="btn-toggle-room" onclick="toggleExamRoom()" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold shadow-md transition">
-            Khóa Phòng Thi
+            Đang Khóa 
           </button>
         </div>
 
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
           <div>
             <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Hiển Thị Điểm Số</span>
-            <p id="ctrl-score-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở</p>
+            <p id="ctrl-score-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở </p>
           </div>
           <button id="btn-toggle-score-lock" onclick="toggleScoreLock()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold shadow-md transition">
-            Đang Khóa
+            Đang Khóa 
           </button>
         </div>
 
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
           <div>
             <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Đáp Án & Lời Giải</span>
-            <p id="ctrl-answer-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở</p>
+            <p id="ctrl-answer-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở </p>
           </div>
           <button id="btn-toggle-answer-lock" onclick="toggleAnswerLock()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-md transition">
-            Đang Khóa
+            Đang Khóa 
           </button>
         </div>
       </div>
@@ -325,7 +330,7 @@
   <footer class="no-print w-full glass-card border-t border-slate-200/60 dark:border-slate-800/60 mt-12 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500 dark:text-slate-400 text-center md:text-left">
       <div>
-        <p class="font-bold text-slate-700 dark:text-slate-200">Hệ Thống Ôn Luyện Thi Trực Tuyến <span class="font-bold text-emerald-600 dark:text-emerald-400">TiếngAnhơi</p>
+	<p class="font-bold text-slate-700 dark:text-slate-200">Hệ Thống Ôn Luyện Thi Trực Tuyến <span class="font-bold text-emerald-600 dark:text-emerald-400">TiếngAnhơi</p>
         <p>Trường THCS & THPT Nguyễn Khuyến – Bình Dương</p>
       </div>
       <div>
@@ -358,15 +363,15 @@
 
       <form id="form-auth-register" onsubmit="handleTeacherRegister(event)" class="space-y-4 hidden">
         <div>
-          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Tên Giáo Viên Mới</label>
-          <input type="text" id="reg-username" required placeholder="Ví dụ: Nguyễn Văn X" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Tên Giáo Viên</label>
+          <input type="text" id="reg-username" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
         </div>
         <div>
           <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Mật Khẩu</label>
           <input type="password" id="reg-password" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
         </div>
         <div>
-          <label class="block text-xs font-black uppercase text-emerald-600 mb-1.5">Mã Xác Thực (Nội bộ)</label>
+          <label class="block text-xs font-black uppercase text-emerald-600 mb-1.5">Mã Xác Thực (Nội Bộ)</label>
           <input type="password" id="reg-auth-code" placeholder="Nhập Mã Xác Thực" required class="w-full px-4 py-3 rounded-2xl border border-emerald-400 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
         </div>
         <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/25 transition">Đăng Ký & Đồng Bộ Web</button>
@@ -390,11 +395,11 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1">Mã Đề Thi <span class="text-red-500">*</span></label>
-            <input type="text" id="custom-exam-code" placeholder="Ví dụ: FC0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
+            <input type="text" id="custom-exam-code" placeholder="Ví dụ: FC7" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
           </div>
           <div class="sm:col-span-2">
             <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1">Tiêu Đề Đề Thi <span class="text-red-500">*</span></label>
-            <input type="text" id="custom-exam-title" placeholder="KIỂM TRA ĐÁNH GIÁ HKI - FC0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
+            <input type="text" id="custom-exam-title" placeholder="KIỂM TRA TIẾNG ANH 11 - SỐ 2" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm font-bold outline-none">
           </div>
         </div>
 
@@ -417,7 +422,7 @@
           <div class="flex items-center justify-between">
             <h4 class="font-black text-sm text-emerald-600"><i class="fa-solid fa-book-open mr-1"></i> Quản Lý Các Đoạn Văn Đọc Hiểu (Reading Passages):</h4>
             <button type="button" onclick="addPassageInputBox()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow">
-              <i class="fa-solid fa-plus mr-1"></i> Thêm Đoạn Văn Đọc
+              <i class="fa-solid fa-plus mr-1"></i> Thêm Bài Đọc
             </button>
           </div>
           <div id="custom-passages-container" class="space-y-3"></div>
@@ -425,7 +430,7 @@
 
         <!-- CẤU HÌNH TỪNG CÂU HỎI -->
         <div class="space-y-3 pt-2 border-t border-slate-200 dark:border-slate-800">
-          <h4 class="font-black text-sm text-emerald-600">📝 Cấu Hình Đề Chi Tiết:</h4>
+          <h4 class="font-black text-sm text-emerald-600">📝 Cấu Hình Chi Tiết Từng Câu Hỏi:</h4>
           <div id="custom-questions-inputs-container" class="space-y-4"></div>
         </div>
       </div>
@@ -486,7 +491,10 @@
     const LS_SUBMISSIONS_KEY = "EDUTEST_SUBMISSIONS_V5";
     const LS_TEACHERS_KEY = "EDUTEST_TEACHER_ACCOUNTS_V5";
     const LS_CONTROLS_KEY = "EDUTEST_ROOM_CONTROLS_V5";
-    const channel = new BroadcastChannel('edutest_sync_channel_v5');
+
+    // CLOUD SYNC CONFIG (Giúp đồng bộ real-time hoàn toàn giữa các máy khác nhau)
+    const BIN_ID = "679875e4acd3cb34a8a3a4c1"; // Public Shared Cloud Bin
+    const API_KEY = "$2a$10$Wk34t2eH5gH1j6y7bK8z5u8WpX9Z7Q2m8L5v4n3j2k1h0g9f8e7d6"; // Public Sync Key
 
     let roomControls = {
       roomOpen: true,
@@ -569,34 +577,71 @@
       updateStudentTeacherSelect();
       checkTheme();
 
-      window.addEventListener('storage', (e) => handleSyncEvent(e.key));
-      channel.onmessage = (event) => {
-        if (event.data.type === 'SYNC_DATA') {
-          loadStoredExams();
-          loadRoomControls();
-          updateStudentTeacherSelect();
-          if (!document.getElementById("view-teacher").classList.contains("hidden")) {
-            renderTeacherDashboard();
-          }
-        }
-      };
+      // Tự động đồng bộ dữ liệu đa máy mỗi 5 giây
+      setInterval(syncDataFromCloud, 5000);
     });
 
-    function broadcastChange() {
-      localStorage.setItem('EDUTEST_SYNC_TRIGGER', Date.now().toString());
-      channel.postMessage({ type: 'SYNC_DATA' });
+    // Hàm đồng bộ dữ liệu real-time qua Cloud Storage giữa các máy
+    async function syncDataFromCloud() {
+      try {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { 'X-Master-Key': API_KEY }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const cloudData = data.record;
+          if (cloudData) {
+            if (cloudData.exams) {
+              examsData = { ...DEFAULT_EXAMS, ...cloudData.exams };
+              localStorage.setItem(LS_EXAMS_KEY, JSON.stringify(cloudData.exams));
+              populateExamSelect();
+            }
+            if (cloudData.controls) {
+              roomControls = cloudData.controls;
+              localStorage.setItem(LS_CONTROLS_KEY, JSON.stringify(roomControls));
+              updateRoomBannerUI();
+              if (currentTeacherUser) updateTeacherControlUI();
+            }
+            if (cloudData.teachers) {
+              localStorage.setItem(LS_TEACHERS_KEY, JSON.stringify(cloudData.teachers));
+              updateStudentTeacherSelect();
+            }
+            if (cloudData.submissions) {
+              localStorage.setItem(LS_SUBMISSIONS_KEY, JSON.stringify(cloudData.submissions));
+              if (!document.getElementById("view-teacher").classList.contains("hidden")) {
+                renderTeacherDashboard();
+              }
+            }
+            document.getElementById("sync-status-text").textContent = "Đã đồng bộ Cloud";
+          }
+        }
+      } catch (e) {
+        // Fallback sang LocalStorage nếu mất kết nối mạng tạm thời
+        document.getElementById("sync-status-text").textContent = "Offline (Local mode)";
+      }
     }
 
-    function handleSyncEvent(key) {
-      if (key === LS_TEACHERS_KEY) updateStudentTeacherSelect();
-      if (key === LS_EXAMS_KEY) {
-        loadStoredExams();
-        populateExamSelect();
-      }
-      if (key === LS_CONTROLS_KEY) loadRoomControls();
-      if (key === LS_SUBMISSIONS_KEY && !document.getElementById("view-teacher").classList.contains("hidden")) {
-        renderTeacherDashboard();
-      }
+    async function pushDataToCloud() {
+      try {
+        const payload = {
+          exams: JSON.parse(localStorage.getItem(LS_EXAMS_KEY) || "{}"),
+          controls: JSON.parse(localStorage.getItem(LS_CONTROLS_KEY) || "{}"),
+          teachers: JSON.parse(localStorage.getItem(LS_TEACHERS_KEY) || "[]"),
+          submissions: JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]")
+        };
+        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': API_KEY
+          },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {}
+    }
+
+    function broadcastChange() {
+      pushDataToCloud();
     }
 
     function loadRoomControls() {
@@ -733,7 +778,7 @@
       } else {
         const placeholderOpt = document.createElement("option");
         placeholderOpt.value = "";
-        placeholderOpt.textContent = "-- Chọn Giáo Viên Giảng Dạy --";
+        placeholderOpt.textContent = "-- Chọn Giáo Viên --";
         select.appendChild(placeholderOpt);
 
         teachers.forEach(t => {
@@ -930,7 +975,7 @@
     }
 
     function confirmSubmitExam() {
-      if (confirm("Bạn có chắc chắn muốn nộp bài thi không?")) submitExam();
+      if (confirm("Cưng chắc chưa?")) submitExam();
     }
 
     function checkAnswerCorrect(userVal, targetAnswerStr) {
@@ -1042,7 +1087,7 @@
 
     function openCreateCustomExamModal() {
       document.getElementById("custom-exam-code").value = "FC" + Math.floor(Math.random() * 90 + 10);
-      document.getElementById("custom-exam-title").value = "KIỂM TRA ĐÁNH GIÁ HKI - FC0";
+      document.getElementById("custom-exam-title").value = "KIỂM TRA TIẾNG ANH 11 - ĐỀ TÙY CHỈNH";
       document.getElementById("custom-passages-container").innerHTML = "";
       buildCustomExamFormFields();
       document.getElementById("modal-create-exam").classList.remove("hidden");
@@ -1055,7 +1100,7 @@
       div.innerHTML = `
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <label class="text-xs font-bold text-emerald-700 dark:text-emerald-300">Hiển thị trước câu số: </label>
+            <label class="text-xs font-bold text-emerald-700 dark:text-emerald-300">Hiển thị trước câu số:</label>
             <input type="number" class="passage-q-num w-16 px-2 py-1 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-bold bg-white dark:bg-slate-900 outline-none" value="${atQuestion}" min="1" max="50">
           </div>
           <button type="button" onclick="this.closest('.passage-item').remove()" class="text-red-500 hover:text-red-700 text-xs font-bold"><i class="fa-solid fa-trash"></i> Xóa đoạn văn</button>
@@ -1143,7 +1188,7 @@
         const qType = document.getElementById(`cust-type-${i}`).value;
         const qText = document.getElementById(`cust-q-${i}`).value.trim() || `Câu hỏi số ${i}`;
         const answer = document.getElementById(`cust-ans-${i}`).value.trim() || "A";
-        const explain = document.getElementById(`cust-exp-${i}`).value.trim() || "Lời giải chuẩn chi tiết.";
+        const explain = document.getElementById(`cust-exp-${i}`).value.trim() || "Lời giải chi tiết.";
 
         let options = [];
         if (qType === 'mcq') {
@@ -1327,7 +1372,7 @@
       broadcastChange();
 
       closeModal("modal-answer-editor");
-      alert(`Đã lưu cập nhật đáp án cho đề ${code} và đồng bộ dữ liệu!`);
+      alert(`Đã lưu cập nhật đáp án cho đề ${code} và đồng bộ dữ liệu`);
     }
 
     function openTeacherAuthModal() {
@@ -1396,7 +1441,7 @@
 
     function logoutTeacher() {
       currentTeacherUser = null;
-      document.getElementById("teacher-btn-text").textContent = "Dành cho Giáo viên";
+      document.getElementById("teacher-btn-text").textContent = "Giáo viên";
       switchView('landing');
     }
 
@@ -1484,7 +1529,7 @@
     }
 
     function deleteSub(id) {
-      if (confirm("Thầy/Cô có chắc muốn xóa bài làm này?")) {
+      if (confirm("Bạn có chắc muốn xóa bài làm này?")) {
         let subs = JSON.parse(localStorage.getItem(LS_SUBMISSIONS_KEY) || "[]");
         subs = subs.filter(s => s.id !== id);
         localStorage.setItem(LS_SUBMISSIONS_KEY, JSON.stringify(subs));
