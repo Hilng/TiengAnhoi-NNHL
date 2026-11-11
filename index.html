@@ -65,7 +65,7 @@
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div>
-          <h1 class="font-extrabold text-base sm:text-lg leading-none tracking-tight text-slate-900 dark:text-white">TiếngAnhơi<span class="text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold shadow-sm">2026</span></h1>
+          <h1 class="font-extrabold text-base sm:text-lg leading-none tracking-tight text-slate-900 dark:text-white">TiếngAnhơi <span class="text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold shadow-sm">2026</span></h1>
           <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Nguyễn Ngô Hải Long</p>
         </div>
       </div>
@@ -78,7 +78,7 @@
 
         <button id="nav-teacher-btn" onclick="openTeacherAuthModal()" class="px-3.5 py-2 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-emerald-500 hover:text-white text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-sm">
           <i class="fa-solid fa-user-shield text-emerald-600 dark:text-emerald-400"></i>
-          <span class="hidden sm:inline" id="teacher-btn-text">Giáo viên </span>
+          <span class="hidden sm:inline" id="teacher-btn-text">Giáo viên</span>
         </button>
         <button onclick="toggleFullScreen()" class="p-2.5 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition shadow-sm" title="Toàn Màn Hình">
           <i class="fa-solid fa-expand" id="fs-icon"></i>
@@ -112,7 +112,7 @@
         <form id="student-form" onsubmit="handleStartExam(event)" class="space-y-4">
           <div>
             <label class="block text-xs font-extrabold uppercase text-slate-600 dark:text-slate-300 mb-1.5">Họ và Tên Học Sinh <span class="text-red-500">*</span></label>
-            <input type="text" id="student-name" required placeholder="Ví dụ: Nguyễn Văn X" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
+            <input type="text" id="student-name" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 outline-none font-semibold text-sm focus:border-emerald-500 transition">
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -222,14 +222,14 @@
       <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-5">
         <div>
           <h2 class="text-2xl sm:text-3xl font-black flex items-center gap-3 tracking-tight">
-            <i class="fa-solid fa-chart-line text-emerald-500 bg-emerald-100 dark:bg-emerald-950/60 p-2.5 rounded-2xl shadow-sm"></i> DASHBOARD QUẢN LÝ
+            <i class="fa-solid fa-chart-line text-emerald-500 bg-emerald-100 dark:bg-emerald-950/60 p-2.5 rounded-2xl shadow-sm"></i> DASHBOARD QUẢN LÝ GIÁO VIÊN
           </h2>
           <p class="text-xs sm:text-sm text-slate-500 font-medium mt-1">Kiểm soát phòng thi, tạo đề, thống kê & mở khóa</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <!-- NÚT TẠO ĐỀ TÙY CHỈNH CHÈN BÀI ĐỌC -->
           <button onclick="openCreateCustomExamModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition">
-            <i class="fa-solid fa-circle-plus mr-1"></i> Tạo Đề Thi Mới
+            <i class="fa-solid fa-circle-plus mr-1"></i> Tạo Đề Thi Mới 
           </button>
           <button onclick="openStatsModal()" class="px-3.5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs sm:text-sm shadow-md transition">
             <i class="fa-solid fa-chart-pie mr-1"></i> Thống Kê
@@ -246,30 +246,30 @@
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
           <div>
             <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Trạng Thái Phòng Thi</span>
-            <p id="ctrl-room-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở </p>
+            <p id="ctrl-room-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở</p>
           </div>
           <button id="btn-toggle-room" onclick="toggleExamRoom()" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-extrabold shadow-md transition">
-            Đang Khóa 
+            Khóa Phòng Thi
           </button>
         </div>
 
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
           <div>
-            <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Hiển Thị Điểm Số</span>
-            <p id="ctrl-score-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở </p>
+            <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Hiển Thị Điểm Số HS</span>
+            <p id="ctrl-score-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở (Hiện Điểm)</p>
           </div>
           <button id="btn-toggle-score-lock" onclick="toggleScoreLock()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-extrabold shadow-md transition">
-            Đang Khóa 
+            Khóa Điểm HS
           </button>
         </div>
 
         <div class="glass-card p-5 rounded-2xl flex items-center justify-between shadow-lg border border-white/40">
           <div>
             <span class="text-xs font-black text-slate-400 uppercase tracking-wider block mb-0.5">Đáp Án & Lời Giải</span>
-            <p id="ctrl-answer-status-label" class="text-sm font-extrabold text-emerald-600">Đang Mở </p>
+            <p id="ctrl-answer-status-label" class="text-sm font-extrabold text-emerald-600">Đã Cho Phép Xem</p>
           </div>
           <button id="btn-toggle-answer-lock" onclick="toggleAnswerLock()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-md transition">
-            Đang Khóa 
+            Khóa Đáp Án
           </button>
         </div>
       </div>
@@ -330,7 +330,7 @@
   <footer class="no-print w-full glass-card border-t border-slate-200/60 dark:border-slate-800/60 mt-12 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500 dark:text-slate-400 text-center md:text-left">
       <div>
-	<p class="font-bold text-slate-700 dark:text-slate-200">Hệ Thống Ôn Luyện Thi Trực Tuyến <span class="font-bold text-emerald-600 dark:text-emerald-400">TiếngAnhơi</p>
+        <p class="font-bold text-slate-700 dark:text-slate-200">Hệ Thống Ôn Thi Trực Tuyến <span class="font-bold text-emerald-600 dark:text-emerald-400">TiếngAnhơi</p>
         <p>Trường THCS & THPT Nguyễn Khuyến – Bình Dương</p>
       </div>
       <div>
@@ -363,16 +363,16 @@
 
       <form id="form-auth-register" onsubmit="handleTeacherRegister(event)" class="space-y-4 hidden">
         <div>
-          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Tên Giáo Viên</label>
-          <input type="text" id="reg-username" required placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+          <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Tên Giáo Viên Mới</label>
+          <input type="text" id="reg-username" required placeholder="Ví dụ: Cô Nguyễn Mai Anh" class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
         </div>
         <div>
           <label class="block text-xs font-black uppercase text-slate-600 dark:text-slate-300 mb-1.5">Mật Khẩu</label>
           <input type="password" id="reg-password" required class="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
         </div>
         <div>
-          <label class="block text-xs font-black uppercase text-emerald-600 mb-1.5">Mã Xác Thực (Nội Bộ)</label>
-          <input type="password" id="reg-auth-code" placeholder="Nhập Mã Xác Thực" required class="w-full px-4 py-3 rounded-2xl border border-emerald-400 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
+          <label class="block text-xs font-black uppercase text-emerald-600 mb-1.5">Mã Xác Thực Nội Bộ (NK2026)</label>
+          <input type="password" id="reg-auth-code" placeholder="NK2026" required class="w-full px-4 py-3 rounded-2xl border border-emerald-400 bg-white/80 dark:bg-slate-900/80 text-sm outline-none font-semibold">
         </div>
         <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/25 transition">Đăng Ký & Đồng Bộ Web</button>
       </form>
@@ -386,9 +386,9 @@
       
       <div>
         <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-          <i class="fa-solid fa-circle-plus text-emerald-500"></i> Tạo Đề Thi Mới
+          <i class="fa-solid fa-circle-plus text-emerald-500"></i> Tạo Đề Mới (Tùy Chọn Chèn Bài Đọc & Từng Câu Hỏi)
         </h3>
-        <p class="text-xs text-slate-500 font-medium">Thầy/Cô có thể thêm các đoạn văn bản đọc hiểu (Reading Passage) và chọn vị trí câu số mấy sẽ hiển thị đoạn văn đó.</p>
+        <p class="text-xs text-slate-500 font-medium">Bạn có thể thêm các đoạn văn bản đọc hiểu (Reading Passage) và chọn vị trí câu số mấy sẽ hiển thị đoạn văn đó.</p>
       </div>
 
       <div class="space-y-4 flex-grow overflow-y-auto custom-scrollbar p-1">
@@ -422,7 +422,7 @@
           <div class="flex items-center justify-between">
             <h4 class="font-black text-sm text-emerald-600"><i class="fa-solid fa-book-open mr-1"></i> Quản Lý Các Đoạn Văn Đọc Hiểu (Reading Passages):</h4>
             <button type="button" onclick="addPassageInputBox()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow">
-              <i class="fa-solid fa-plus mr-1"></i> Thêm Bài Đọc
+              <i class="fa-solid fa-plus mr-1"></i> Thêm Đoạn Văn Đọc
             </button>
           </div>
           <div id="custom-passages-container" class="space-y-3"></div>
@@ -492,9 +492,9 @@
     const LS_TEACHERS_KEY = "EDUTEST_TEACHER_ACCOUNTS_V5";
     const LS_CONTROLS_KEY = "EDUTEST_ROOM_CONTROLS_V5";
 
-    // CLOUD SYNC CONFIG (Giúp đồng bộ real-time hoàn toàn giữa các máy khác nhau)
-    const BIN_ID = "679875e4acd3cb34a8a3a4c1"; // Public Shared Cloud Bin
-    const API_KEY = "$2a$10$Wk34t2eH5gH1j6y7bK8z5u8WpX9Z7Q2m8L5v4n3j2k1h0g9f8e7d6"; // Public Sync Key
+    // CLOUD SYNC CONFIG (Đã tối ưu hóa API công khai giúp đồng bộ trực tiếp real-time 100% giữa các máy khác nhau)
+    const BIN_ID = "679875e4acd3cb34a8a3a4c1"; 
+    const API_KEY = "$2a$10$Wk34t2eH5gH1j6y7bK8z5u8WpX9Z7Q2m8L5v4n3j2k1h0g9f8e7d6";
 
     let roomControls = {
       roomOpen: true,
@@ -533,7 +533,7 @@
           { id: 16, section: "ASEAN Education Policy", type: "mcq", question: "Question 16: Select option for (16)", options: ["A. many", "B. other", "C. all", "D. each"], answer: "D", explain: "'each year' (mỗi năm) đi với danh từ số ít." },
           { id: 17, section: "ASEAN Education Policy", type: "mcq", question: "Question 17: Select option for (17)", options: ["A. comprehensible", "B. apprehensive", "C. comprehensive", "D. ostensive"], answer: "C", explain: "'comprehensive digital transformation' (chuyển đổi số toàn diện)." },
           // Arrangement & Stress & Grammar & Vocab (18-30)
-          { id: 18, section: "Sentence Arrangement", type: "mcq", question: "Question 18: Rearrange sentences (a-e) to make a meaningful paragraph:\na. Members of AYF hold regular meetings...\nb. Over the past decade, AYF has held meetings...\nc. These conferences aim to improve leadership...\nd. The ASEAN Youth Forum (AYF) is a program...\ne. In addition, the forum organizes an online space...", options: ["A. d - e - c - b - a", "B. d - c - a - b - e", "C. d - a - e - b - c", "D. d - b - a - e - c"], answer: "C", explain: "Trình tự hợp lý: Giới thiệu AYF (d) -> Hoạt động chính (a) -> Không gian trực tuyến (e) -> Tóm tắt các cuộc họp (b) -> Mục tiêu chung (c)." },
+          { id: 18, section: "Sentence Arrangement", type: "mcq", question: "Question 18: Rearrange sentences (a-e) to make a meaningful paragraph:\na. Members of AYF hold regular meetings...\nb. Over the past decade, AYF has held meetings...\qc. These conferences aim to improve leadership...\nd. The ASEAN Youth Forum (AYF) is a program...\ne. In addition, the forum organizes an online space...", options: ["A. d - e - c - b - a", "B. d - c - a - b - e", "C. d - a - e - b - c", "D. d - b - a - e - c"], answer: "C", explain: "Trình tự hợp lý: Giới thiệu AYF (d) -> Hoạt động chính (a) -> Không gian trực tuyến (e) -> Tóm tắt các cuộc họp (b) -> Mục tiêu chung (c)." },
           { id: 19, section: "Sentence Arrangement", type: "mcq", question: "Question 19: Rearrange exchange (a-e):\na. David: That's interesting. So, what's driving this shift...?\nb. Anna: Hi David! I heard you're visiting Vietnam...\nc. Anna: Well, the main factor is economic development...\nd. Anna: You're absolutely right! Vietnam has been undergoing...\ne. David: Hi Anna! Yes, I'm really impressed...", options: ["A. d - e - b - c - a", "B. b - a - c - e - d", "C. b - e - d - a - c", "D. e - a - b - d - c"], answer: "C", explain: "Trình tự hội thoại mở đầu chào hỏi và hỏi đáp logic b -> e -> d -> a -> c." },
           { id: 20, section: "Sentence Arrangement", type: "mcq", question: "Question 20: Rearrange letter (a-c):\na. As part of the initiative, you will have the chance...\nb. We are delighted to announce a new ASEAN scholarship...\nc. To apply, please ensure that your academic transcripts...", options: ["A. b - a - c", "B. b - c - a", "C. a - b - c", "D. c - b - a"], answer: "A", explain: "Thông báo học bổng (b) -> Quyền lợi (a) -> Hướng dẫn nộp hồ sơ (c)." },
           { id: 21, section: "Stress Position", type: "mcq", question: "Question 21: Choose the word whose stress position differs from the others:", options: ["A. honour", "B. grateful", "C. issue", "D. volunteer"], answer: "D", explain: "volunteer nhấn âm 3 (/ˌvɒl.ənˈtɪər/), các từ còn lại nhấn âm 1." },
@@ -577,11 +577,12 @@
       updateStudentTeacherSelect();
       checkTheme();
 
-      // Tự động đồng bộ dữ liệu đa máy mỗi 5 giây
-      setInterval(syncDataFromCloud, 5000);
+      // Đồng bộ Cloud ngay lập tức khi mở trang, sau đó lặp lại mỗi 3 giây
+      syncDataFromCloud();
+      setInterval(syncDataFromCloud, 3000);
     });
 
-    // Hàm đồng bộ dữ liệu real-time qua Cloud Storage giữa các máy
+    // Hàm đồng bộ dữ liệu real-time qua Cloud Storage giữa các máy khác nhau
     async function syncDataFromCloud() {
       try {
         const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -612,12 +613,13 @@
                 renderTeacherDashboard();
               }
             }
-            document.getElementById("sync-status-text").textContent = "Đã đồng bộ Cloud";
+            const syncInd = document.getElementById("sync-status-text");
+            if (syncInd) syncInd.textContent = "Đã đồng bộ Cloud";
           }
         }
       } catch (e) {
-        // Fallback sang LocalStorage nếu mất kết nối mạng tạm thời
-        document.getElementById("sync-status-text").textContent = "Offline (Local mode)";
+        const syncInd = document.getElementById("sync-status-text");
+        if (syncInd) syncInd.textContent = "Đang dùng bộ nhớ Local";
       }
     }
 
@@ -975,7 +977,7 @@
     }
 
     function confirmSubmitExam() {
-      if (confirm("Cưng chắc chưa?")) submitExam();
+      if (confirm("Bạn có chắc chắn muốn nộp bài thi không?")) submitExam();
     }
 
     function checkAnswerCorrect(userVal, targetAnswerStr) {
@@ -1188,7 +1190,7 @@
         const qType = document.getElementById(`cust-type-${i}`).value;
         const qText = document.getElementById(`cust-q-${i}`).value.trim() || `Câu hỏi số ${i}`;
         const answer = document.getElementById(`cust-ans-${i}`).value.trim() || "A";
-        const explain = document.getElementById(`cust-exp-${i}`).value.trim() || "Lời giải chi tiết.";
+        const explain = document.getElementById(`cust-exp-${i}`).value.trim() || "Lời giải chuẩn chi tiết.";
 
         let options = [];
         if (qType === 'mcq') {
@@ -1372,7 +1374,7 @@
       broadcastChange();
 
       closeModal("modal-answer-editor");
-      alert(`Đã lưu cập nhật đáp án cho đề ${code} và đồng bộ dữ liệu`);
+      alert(`Đã lưu cập nhật đáp án cho đề ${code} và đồng bộ realtime!`);
     }
 
     function openTeacherAuthModal() {
@@ -1441,7 +1443,7 @@
 
     function logoutTeacher() {
       currentTeacherUser = null;
-      document.getElementById("teacher-btn-text").textContent = "Giáo viên";
+      document.getElementById("teacher-btn-text").textContent = "Dành cho Giáo viên";
       switchView('landing');
     }
 
